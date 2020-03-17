@@ -24,5 +24,4 @@ export class DiscordService {
   public stop(): void {
     this.discordInstance.destroy();
   }
-
 }
