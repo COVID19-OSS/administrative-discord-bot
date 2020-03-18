@@ -1,5 +1,6 @@
 module.exports = {
   root: true,
+  ignorePatterns: ["migrations/**/*"],
   parser: '@typescript-eslint/parser',
   plugins: [
     '@typescript-eslint',

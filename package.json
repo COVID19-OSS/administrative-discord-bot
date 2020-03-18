@@ -6,6 +6,7 @@
   "scripts": {
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
+    "migrate": "node-pg-migrate",
     "lint": "eslint . --ext .ts,.tsx"
   },
   "repository": {
