@@ -1,12 +1,13 @@
 import { DiscordCommand } from "../DiscordCommand";
-import {Channel, MessageEmbed, TextChannel} from "discord.js";
+import { Channel, GuildMember, MessageEmbed, TextChannel } from "discord.js";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES } = process.env;
 
+const REPLACE_MENTION_REGEX = /[<>!@]/g;
+const AUTHORIZED_ROLES = QUARANTINE_ROLES?.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
+const PROTECTED_ROLES = STAFF_ROLES?.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
+
 export class SuspendDiscordCommand extends DiscordCommand {
-  static readonly REPLACE_MENTION_REGEX: RegExp = /[<>!@]/g;
-  static readonly AUTHORIZED_ROLES = QUARANTINE_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
-  static readonly PROTECTED_ROLES = STAFF_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 
   private async sendMessage(channel: TextChannel, messageType: string, params: string[] = []): Promise<void> {
     const messageEmbed: MessageEmbed = new MessageEmbed().setTitle("Suspend");
@@ -36,7 +37,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
       await this.sendMessage(this.messageChannel, "usage");
       return;
     }
-    const toQuarantine = this.args[0].replace(SuspendDiscordCommand.REPLACE_MENTION_REGEX, "");
+    const toQuarantine = this.args[0].replace(REPLACE_MENTION_REGEX, "");
     const reasonProvided: string = this.args.splice(1).join(" ");
     const guild = this.message.guild;
     const member = toQuarantine ? guild?.member(toQuarantine) : null;
@@ -45,7 +46,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
       return;
     }
 
-    if (member?.roles.cache.some(role => SuspendDiscordCommand.PROTECTED_ROLES.includes(role.name))) {
+    if (member?.roles.cache.some(role => PROTECTED_ROLES.includes(role.name))) {
       this.sendMessage(this.messageChannel, "protectedRole");
       return;
     }
@@ -72,7 +73,12 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const qtCategory: Channel | undefined = guild?.channels.cache.filter(channel => channel.name.toLowerCase() === "quarantine" && channel.type == "category").first();
     if (!qtCategory) {
       return;
+      // should send error message
     }
+
+    // needs refactor
+    const quarantineId = await this.persistQuarantine(member, "reason");
+    console.log(quarantineId);
 
     const qtChannel = await guild?.channels.create("q-" + (maxQtChannel + 1), {
       reason: "Quarantine for user " + member.displayName + " requested by " + this.message.member?.displayName,
@@ -89,8 +95,25 @@ export class SuspendDiscordCommand extends DiscordCommand {
     }
   }
 
+  private async persistQuarantine(member: GuildMember, reason: string): Promise<number> {
+    const { quarantineRepository } = this.dependencies.repositoryRegistry;
+
+    const moderatorUserId = await this.getCoalescedUserId(member.id);
+    const offenderUserId = await this.getCoalescedUserId(member.id);
+
+    return quarantineRepository.create(offenderUserId, moderatorUserId, reason);
+  }
+
+  private async getCoalescedUserId(discordUserId: string): Promise<number> {
+    const { userRepository } = this.dependencies.repositoryRegistry;
+    const user = await userRepository.getByDiscordId(discordUserId);
+    if (user) return user.user_id;
+
+    return userRepository.create({ discordUserId: discordUserId });
+  }
+
   public async validate(): Promise<boolean> {
-    if (!this.message.member?.roles.cache.some(role => SuspendDiscordCommand.AUTHORIZED_ROLES.includes(role.name))) {
+    if (!this.message.member?.roles.cache.some(role => AUTHORIZED_ROLES.includes(role.name))) {
       console.error("Quarantine command used by user who does not have permission!");
       return false;
     }
