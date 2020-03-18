@@ -2,7 +2,7 @@ exports.up = (pgm) => {
   pgm.createTable("users", {
     user_id: "id",
     discord_id: {
-      type: "varchar(20)",
+      type: "varchar(30)",
       notNull: true
     },
     created_at: {

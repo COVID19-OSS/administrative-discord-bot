@@ -33,10 +33,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
   }
 
   public async execute(): Promise<void> {
-    if (this.args.length === 0) {
-      await this.sendMessage(this.messageChannel, "usage");
-      return;
-    }
+    const { quarantineRepository } = this.dependencies.repositoryRegistry;
     const toQuarantine = this.args[0].replace(REPLACE_MENTION_REGEX, "");
     const reasonProvided: string = this.args.splice(1).join(" ");
     const guild = this.message.guild;
@@ -72,14 +69,8 @@ export class SuspendDiscordCommand extends DiscordCommand {
       // should send error message
     }
 
-    let quarantineId = -1;
-    if (this.message.member) {
-      quarantineId = await this.persistQuarantine(member, this.message.member, ((reasonProvided !== "") ? reasonProvided : "None"));
-    }
-
-    if (quarantineId === -1) {
-      return;
-    }
+    if (!this.message.member) return;
+    const quarantineId = await this.persistQuarantine(member, this.message.member, reasonProvided);
 
     const qtChannel = await guild?.channels.create("q-" + quarantineId, {
       reason: "Quarantine for user " + member.displayName + " requested by " + this.message.member?.displayName,
@@ -92,7 +83,8 @@ export class SuspendDiscordCommand extends DiscordCommand {
     });
 
     if (qtChannel) {
-      await this.sendMessage(qtChannel, "channelNotification", [member.id, (reasonProvided !== "") ? reasonProvided : "None"]);
+      await this.sendMessage(qtChannel, "channelNotification", [member.id, reasonProvided || "None"]);
+      await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
     }
   }
 
@@ -110,8 +102,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const user = await userRepository.getByDiscordId(discordUserId);
     if (user) return user.user_id;
 
-    const insertResult = await userRepository.create({ discordUserId: discordUserId });
-    return insertResult;
+    return await userRepository.create({ discordUserId: discordUserId });
   }
 
   public async validate(): Promise<boolean> {
@@ -124,7 +115,12 @@ export class SuspendDiscordCommand extends DiscordCommand {
       console.error("Unable to execute quarantine command - insufficient privileges");
       return false;
     }
-    
+
+    if (this.args.length === 0) {
+      await this.sendMessage(this.messageChannel, "usage");
+      return false;
+    }
+
     return true;
   }
 }
