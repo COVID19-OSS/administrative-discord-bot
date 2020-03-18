@@ -9,7 +9,7 @@ export class UserRepository extends Repository {
   }
 
   public async getByDiscordId(discordId: string): Promise<User|null> {
-    const statement = "SELECT (user_id, discord_id, created_at) FROM users WHERE discord_id = $1";
+    const statement = "SELECT user_id, discord_id, created_at FROM users WHERE discord_id = $1";
     const result = await this.postgresDriver.query(statement, [discordId]);
     return result.rowCount > 0 ? result.rows[0] : null;
   }

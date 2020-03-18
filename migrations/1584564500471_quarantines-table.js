@@ -14,6 +14,9 @@ exports.up = (pgm) => {
     reason: {
       type: "citext"
     },
+    channel_id: {
+      type: "varchar(30)"
+    },
     created_at: {
       type: "timestamp",
       notNull: true
@@ -21,9 +24,11 @@ exports.up = (pgm) => {
   });
   pgm.createIndex("quarantines", ["offender_user_id"]);
   pgm.createIndex("quarantines", ["moderator_user_id"]);
+  pgm.createIndex("quarantines", ["channel_id"], { unique: true });
 };
 
 exports.down = (pgm) => {
+  pgm.dropIndex("quarantines", ["channel_id"], { unique: true });
   pgm.dropIndex("quarantines", ["offender_user_id"]);
   pgm.dropIndex("quarantines", ["moderator_user_id"]);
   pgm.dropTable("quarantines");
