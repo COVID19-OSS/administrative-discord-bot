@@ -1,6 +1,6 @@
 import { DiscordService } from "./services/DiscordService";
-import { PostgresDriver } from "./database/PostgresDriver";
-import { DatabaseRegistry } from "./database/DatabaseRegistry";
+import { PostgresDriver } from "./services/PostgresDriver";
+import { RepositoryRegistry } from "./database/RepositoryRegistry";
 import { DiscordCommandListener } from "./command/DiscordCommandListener";
 
 export class Application {
@@ -11,8 +11,8 @@ export class Application {
     this.discordService = new DiscordService();
     this.postgresDriver = new PostgresDriver();
 
-    const databaseRegistry = new DatabaseRegistry(this.postgresDriver);
-    new DiscordCommandListener({ discordService: this.discordService, databaseRegistry });
+    const databaseRegistry = new RepositoryRegistry(this.postgresDriver);
+    new DiscordCommandListener({ discordService: this.discordService, repositoryRegistry: databaseRegistry });
   }
 
   public async start(): Promise<void> {

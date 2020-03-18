@@ -1,7 +1,7 @@
-import { DatabaseRegistry } from "../../database/DatabaseRegistry";
+import { RepositoryRegistry } from "../../database/RepositoryRegistry";
 import { DiscordService } from "../../services/DiscordService";
 
 export interface CommandDependencies {
-  databaseRegistry: DatabaseRegistry;
+  repositoryRegistry: RepositoryRegistry;
   discordService: DiscordService;
 }

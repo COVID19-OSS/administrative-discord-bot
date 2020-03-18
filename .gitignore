@@ -109,3 +109,5 @@ dist
 
 etc/guh.env
 etc/bright.env
+
+*/**/.DS_Store
