@@ -1,4 +1,5 @@
 import { Repository } from "./Repository";
+import { Quarantine } from "../definitions/entities/Quarantine";
 
 export class QuarantineRepository extends Repository {
   public async create(offenderUserId: number, moderatorUserId: number, reason?: string, channelId?: string): Promise<number> {
@@ -8,6 +9,13 @@ export class QuarantineRepository extends Repository {
     const result = await this.postgresDriver.query(statement, values);
     return result.rows[0]["quarantine_id"];
   }
+
+  public async getByOffenderDiscordId(offenderDiscordId: string): Promise<Array<Quarantine>> {
+    const statement = "SELECT q.* FROM quarantines q INNER JOIN users u on q.offender_user_id = u.user_id WHERE u.discord_id = $1";
+    const result = await this.postgresDriver.query(statement, [offenderDiscordId]);
+    return result.rows;
+  }
+
   public async updateChannelId(quarantineId: number, channelId: string): Promise<void> {
     const statement = "UPDATE quarantines SET channel_id = $1 WHERE quarantine_id = $2";
     await this.postgresDriver.query(statement, [channelId, quarantineId]);
