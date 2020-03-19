@@ -9,7 +9,7 @@ export class UserRepository extends Repository {
   }
 
   public async getOffenderByDiscordChannel(discordChannelId: string): Promise<User|null> {
-    const statement = "SELECT u.* FROM users u INNER JOIN quarantines q on u.user_id = q.offender_user_id WHERE u.discord_id = $1";
+    const statement = "SELECT u.* FROM users u INNER JOIN quarantines q on u.user_id = q.offender_user_id WHERE q.channel_id = $1";
     const result = await this.postgresDriver.query(statement, [discordChannelId]);
     return result.rowCount > 0 ? result.rows[0] : null;
   }

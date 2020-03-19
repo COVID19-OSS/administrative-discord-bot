@@ -3,15 +3,16 @@ import {MessageEmbed, TextChannel} from "discord.js";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES } = process.env;
 
+const REPLACE_MENTION_REGEX: RegExp = /[<>!@]/g;
+const AUTHORIZED_ROLES = QUARANTINE_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
+
 export class UnsuspendDiscordCommand extends DiscordCommand {
-  static readonly REPLACE_MENTION_REGEX: RegExp = /[<>!@]/g;
-  static readonly AUTHORIZED_ROLES = QUARANTINE_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 
   private async sendMessage(channel: TextChannel, messageType: string, params: string[] = []): Promise<void> {
     const messageEmbed: MessageEmbed = new MessageEmbed().setTitle("Un-Suspend");
     let valid = true;
     if (messageType === "usage") {
-      messageEmbed.setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "suspend [mention/id]");
+      messageEmbed.setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]");
     } else if (messageType === "commandResponse") {
       messageEmbed.setFooter("Success!").setDescription("The user has been un-suspended.");
     } else if (messageType === "notSuspended") {
@@ -27,11 +28,20 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
   }
 
   public async execute(): Promise<void> {
+    const { quarantineRepository, userRepository } = this.dependencies.repositoryRegistry;
+    let toUnQuarantine;
     if (this.args.length === 0) {
-      await this.sendMessage(this.messageChannel, "usage");
-      return;
+      if (!this.messageChannel.name.startsWith("q-")) {
+        await this.sendMessage(this.messageChannel, "usage");
+        return;
+      }
+      const toUnQuarantineUser = await userRepository.getOffenderByDiscordChannel(this.messageChannel.id);
+      if (toUnQuarantineUser) {
+        toUnQuarantine = toUnQuarantineUser.discord_id;
+      }
+    } else {
+      toUnQuarantine = this.args[0].replace(REPLACE_MENTION_REGEX, "");
     }
-    const toUnQuarantine = this.args[0].replace(UnsuspendDiscordCommand.REPLACE_MENTION_REGEX, "");
     const guild = this.message.guild;
     const member = toUnQuarantine ? guild?.member(toUnQuarantine) : null;
     if (!member) {
@@ -54,13 +64,17 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
 
     await this.sendMessage(this.messageChannel, "commandResponse");
 
-    if (this.messageChannel.name.startsWith("q-")) {
-      await this.messageChannel.delete("Cleanup quarantined channel.");
+    const quarantine = await quarantineRepository.getMostRecentByOffenderDiscordId(member.id);
+    if (quarantine) {
+      const foundChannel = guild?.channels.cache.filter(channel => channel.id === quarantine.channel_id).first();
+      if (foundChannel) {
+        foundChannel.delete("Channel cleanup from quarantine.");
+      }
     }
   }
 
   public async validate(): Promise<boolean> {
-    if (!this.message.member?.roles.cache.some(role => UnsuspendDiscordCommand.AUTHORIZED_ROLES.includes(role.name))) {
+    if (!this.message.member?.roles.cache.some(role => AUTHORIZED_ROLES.includes(role.name))) {
       console.error("Un-quarantine command used by user who does not have permission!");
       return false;
     }
