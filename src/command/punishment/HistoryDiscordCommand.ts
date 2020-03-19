@@ -12,8 +12,7 @@ export class HistoryDiscordCommand extends DiscordCommand {
     const { quarantineRepository, userRepository } = this.dependencies.repositoryRegistry;
     if (this.args.length === 0) {
       await this.messageChannel.send({
-        embed: new MessageEmbed().setTitle("History").setFooter("An error was encountered.")
-            .setDescription("Usage: " + DISCORD_PREFIX + "history [mention/id]")
+        embed: new MessageEmbed().setTitle("History").setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "history [mention/id]")
       });
       return;
     }
@@ -22,8 +21,7 @@ export class HistoryDiscordCommand extends DiscordCommand {
     const member = toViewHistory ? guild?.member(toViewHistory) : null;
     if (!member) {
       await this.messageChannel.send({
-        embed: new MessageEmbed().setTitle("History").setFooter("An error was encountered.")
-            .setDescription("Usage: " + DISCORD_PREFIX + "history [mention/id]")
+        embed: new MessageEmbed().setTitle("History").setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "history [mention/id]")
       });
       return;
     }
@@ -36,8 +34,7 @@ export class HistoryDiscordCommand extends DiscordCommand {
       }
     }
     await this.messageChannel.send({
-      embed: new MessageEmbed().setTitle("History").setFooter("Success!")
-          .setDescription("User history for: <@" + toViewHistory + ">\n" + history.join("\n"))
+      embed: new MessageEmbed().setTitle("History").setFooter("Success!").setDescription("User history for: <@" + toViewHistory + ">\n" + history.join("\n"))
     });
   }
 

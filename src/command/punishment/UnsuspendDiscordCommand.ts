@@ -14,8 +14,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     if (this.args.length === 0) {
       if (!this.messageChannel.name.startsWith("q-")) {
         await this.messageChannel.send({
-          embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.")
-              .setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]")
+          embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]")
         });
         return;
       }
@@ -30,8 +29,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     const member = toUnQuarantine ? guild?.member(toUnQuarantine) : null;
     if (!member) {
       await this.messageChannel.send({
-        embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.")
-            .setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]")
+        embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]")
       });
       return;
     }
@@ -39,8 +37,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     const userSuspendedRole = member.roles.cache.filter(role => role.name === "Suspended").first();
     if (!userSuspendedRole) {
       await this.messageChannel.send({
-        embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.")
-            .setDescription("The user is not suspended.")
+        embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.").setDescription("The user is not suspended.")
       });
       return;
     }
@@ -53,8 +50,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     }
 
     await this.messageChannel.send({
-      embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("Success!")
-          .setDescription("The user has been un-suspended.")
+      embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("Success!").setDescription("The user has been un-suspended.")
     });
 
     const quarantine = await quarantineRepository.getMostRecentByOffenderDiscordId(member.id);

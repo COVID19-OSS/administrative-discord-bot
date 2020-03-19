@@ -23,8 +23,7 @@ export class StuckChannelDiscordCommand extends DiscordCommand {
 
     if (!this.messageChannel.name.startsWith("q-")) {
       await this.messageChannel.send({
-        embed: new MessageEmbed().setTitle("Stuck Channel").setFooter("An error was encountered.")
-            .setDescription("This can only be used in quarantine channels.")
+        embed: new MessageEmbed().setTitle("Stuck Channel").setFooter("An error was encountered.").setDescription("This can only be used in quarantine channels.")
       });
       return false;
     }
