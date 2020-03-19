@@ -108,3 +108,4 @@ dist
 .vscode
 
 etc/guh.env
+etc/bright.env
