@@ -24,7 +24,7 @@ export class StuckChannelDiscordCommand extends DiscordCommand {
 
   public async execute(): Promise<void> {
     if (this.messageChannel.name.startsWith("q-")) {
-      await this.messageChannel.delete("Cleanup quarantined channel.")
+      await this.messageChannel.delete("Cleanup quarantined channel.");
     } else {
       await this.sendMessage(this.messageChannel, "notCorrectChannel");
     }
