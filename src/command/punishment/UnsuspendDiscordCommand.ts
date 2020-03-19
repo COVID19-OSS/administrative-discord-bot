@@ -55,7 +55,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     await this.sendMessage(this.messageChannel, "commandResponse");
 
     if (this.messageChannel.name.startsWith("q-")) {
-      await this.messageChannel.delete("Cleanup quarantined channel.")
+      await this.messageChannel.delete("Cleanup quarantined channel.");
     }
   }
 
