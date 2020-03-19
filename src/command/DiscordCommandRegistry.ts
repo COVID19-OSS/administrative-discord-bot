@@ -1,16 +1,21 @@
 import { DiscordCommandType } from "./DiscordCommandType";
 import { DiscordCommand } from "./DiscordCommand";
 
+import { StuckChannelDiscordCommand } from "./punishment/StuckChannelDiscordCommand";
 import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
+import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
+import { HelpDiscordCommand } from "./help/HelpDiscordCommand";
+
 import { CommandDependencies } from "../definitions/dependencies/CommandDependencies";
 
-import { Message } from "discord.js";
-import { HelpDiscordCommand } from "./help/HelpDiscordCommand";
+import {Message, TextChannel} from "discord.js";
 
 export class DiscordCommandRegistry {
   private static getRegistry(): Map<string, DiscordCommand> {
     const registry = new Map<DiscordCommandType, DiscordCommand>();
+    registry.set(DiscordCommandType.STUCKCHANNEL, StuckChannelDiscordCommand.prototype);
     registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);
+    registry.set(DiscordCommandType.UNSUSPEND, UnsuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.HELP, HelpDiscordCommand.prototype);
     return registry;
   }
@@ -22,6 +27,7 @@ export class DiscordCommandRegistry {
     if (!CommandForType) return null;
 
     const ReflectedCommand = Object.create(CommandForType);
-    return new ReflectedCommand.constructor(dependencies, command, args, message);
+    const messageChannel = message.channel as TextChannel;
+    return new ReflectedCommand.constructor(dependencies, command, args, message, messageChannel);
   }
 }
