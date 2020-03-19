@@ -16,6 +16,12 @@ export class QuarantineRepository extends Repository {
     return result.rowCount > 0 ? result.rows[0] : null;
   }
 
+  public async getFiveMostRecentByOffenderDiscordId(offenderDiscordId: string): Promise<Array<Quarantine>> {
+    const statement = "SELECT q.* FROM quarantines q INNER JOIN users u on q.offender_user_id = u.user_id WHERE u.discord_id = $1 ORDER BY q.created_at DESC LIMIT 5";
+    const result = await this.postgresDriver.query(statement, [offenderDiscordId]);
+    return result.rows;
+  }
+
   public async updateChannelId(quarantineId: number, channelId: string): Promise<void> {
     const statement = "UPDATE quarantines SET channel_id = $1 WHERE quarantine_id = $2";
     await this.postgresDriver.query(statement, [channelId, quarantineId]);

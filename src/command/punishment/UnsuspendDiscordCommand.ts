@@ -3,7 +3,7 @@ import {MessageEmbed, TextChannel} from "discord.js";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES } = process.env;
 
-const REPLACE_MENTION_REGEX: RegExp = /[<>!@]/g;
+const REPLACE_MENTION_REGEX = /[<>!@]/g;
 const AUTHORIZED_ROLES = QUARANTINE_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 
 export class UnsuspendDiscordCommand extends DiscordCommand {

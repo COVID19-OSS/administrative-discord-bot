@@ -1,6 +1,7 @@
 import { DiscordCommandType } from "./DiscordCommandType";
 import { DiscordCommand } from "./DiscordCommand";
 
+import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
 import { StuckChannelDiscordCommand } from "./punishment/StuckChannelDiscordCommand";
 import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
 import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
@@ -13,6 +14,7 @@ import {Message, TextChannel} from "discord.js";
 export class DiscordCommandRegistry {
   private static getRegistry(): Map<string, DiscordCommand> {
     const registry = new Map<DiscordCommandType, DiscordCommand>();
+    registry.set(DiscordCommandType.HISTORY, HistoryDiscordCommand.prototype);
     registry.set(DiscordCommandType.STUCKCHANNEL, StuckChannelDiscordCommand.prototype);
     registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.UNSUSPEND, UnsuspendDiscordCommand.prototype);
