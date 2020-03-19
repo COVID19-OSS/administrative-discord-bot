@@ -1,5 +1,5 @@
 import { DiscordCommand } from "../DiscordCommand";
-import { Channel, GuildMember, MessageEmbed, TextChannel } from "discord.js";
+import {Channel, GuildMember, MessageEmbed} from "discord.js";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES } = process.env;
 
@@ -9,29 +9,6 @@ const PROTECTED_ROLES = STAFF_ROLES?.split(",").map((s: string) => s.trim()) || 
 
 export class SuspendDiscordCommand extends DiscordCommand {
 
-  private async sendMessage(channel: TextChannel, messageType: string, params: string[] = []): Promise<void> {
-    const messageEmbed: MessageEmbed = new MessageEmbed().setTitle("Suspend");
-    let valid = true;
-    if (messageType === "usage") {
-      messageEmbed.setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "suspend [mention/id] <reason>");
-    } else if (messageType === "commandResponse") {
-      messageEmbed.setFooter("Success!").setDescription("The user has been suspended.");
-    } else if (messageType === "protectedRole") {
-      messageEmbed.setFooter("An error was encountered.").setDescription("The user has a protected role.");
-    } else if (messageType === "alreadySuspended") {
-      messageEmbed.setFooter("An error was encountered.").setDescription("The user has already been suspended.");
-    } else if (messageType === "channelNotification") {
-      messageEmbed.setFooter("Uh-oh.").setDescription("You have been suspeneded, <@" + params[0] + ">.\nReason: " + params[1]);
-    } else {
-      valid = false;
-    }
-    if (valid) {
-      await channel.send({
-        embed: messageEmbed
-      });
-    }
-  }
-
   public async execute(): Promise<void> {
     const { quarantineRepository } = this.dependencies.repositoryRegistry;
     const toQuarantine = this.args[0].replace(REPLACE_MENTION_REGEX, "");
@@ -39,19 +16,28 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const guild = this.message.guild;
     const member = toQuarantine ? guild?.member(toQuarantine) : null;
     if (!member) {
-      await this.sendMessage(this.messageChannel, "usage");
+      await this.messageChannel.send({
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.")
+            .setDescription("Usage: " + DISCORD_PREFIX + "suspend [mention/id] <reason>")
+      });
       return;
     }
 
     if (member?.roles.cache.some(role => PROTECTED_ROLES.includes(role.name))) {
-      this.sendMessage(this.messageChannel, "protectedRole");
+      await this.messageChannel.send({
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.")
+            .setDescription("The user has a protected role.")
+      });
       return;
     }
 
     const userSuspendedRole = member.roles.cache.filter(role => role.name === "Suspended").first();
     const roles = member.roles.cache.filter(role => role.name !== "Default");
     if (userSuspendedRole) {
-      await this.sendMessage(this.messageChannel, "alreadySuspended");
+      await this.messageChannel.send({
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.")
+            .setDescription("The user has already been suspended.")
+      });
       return;
     }
 
@@ -61,7 +47,10 @@ export class SuspendDiscordCommand extends DiscordCommand {
       await member.roles.set(roles);
     }
 
-    await this.sendMessage(this.messageChannel, "commandResponse");
+    await this.messageChannel.send({
+      embed: new MessageEmbed().setTitle("Suspend").setFooter("Success!")
+          .setDescription("The user has been suspended.")
+    });
 
     const qtCategory: Channel | undefined = guild?.channels.cache.filter(channel => channel.name.toLowerCase() === "quarantine" && channel.type == "category").first();
     if (!qtCategory) {
@@ -83,7 +72,10 @@ export class SuspendDiscordCommand extends DiscordCommand {
     });
 
     if (qtChannel) {
-      await this.sendMessage(qtChannel, "channelNotification", [member.id, reasonProvided || "None"]);
+      await qtChannel.send({
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("Uh-oh.")
+            .setDescription("You have been suspeneded, <@" + member.id + ">.\nReason: " + (reasonProvided ? reasonProvided : "None"))
+      });
       await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
     }
   }
@@ -117,7 +109,10 @@ export class SuspendDiscordCommand extends DiscordCommand {
     }
 
     if (this.args.length === 0) {
-      await this.sendMessage(this.messageChannel, "usage");
+      await this.messageChannel.send({
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.")
+            .setDescription("Usage: " + DISCORD_PREFIX + "suspend [mention/id] <reason>")
+      });
       return false;
     }
 
