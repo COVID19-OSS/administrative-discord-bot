@@ -66,21 +66,22 @@ export class SuspendDiscordCommand extends DiscordCommand {
 
     await this.sendMessage(this.messageChannel, "commandResponse");
 
-    // Gonna steal this cheap hack for now ;)
-    const maxQtChannel = guild?.channels.cache.filter(channel => channel.name.startsWith("q-"))
-      .map(channel => parseInt(channel.name.split("-")[1], 10)).sort().pop() || 0;
-
     const qtCategory: Channel | undefined = guild?.channels.cache.filter(channel => channel.name.toLowerCase() === "quarantine" && channel.type == "category").first();
     if (!qtCategory) {
       return;
       // should send error message
     }
 
-    // needs refactor
-    const quarantineId = await this.persistQuarantine(member, "reason");
-    console.log(quarantineId);
+    let quarantineId = -1;
+    if (this.message.member) {
+      quarantineId = await this.persistQuarantine(member, this.message.member, ((reasonProvided !== "") ? reasonProvided : "None"));
+    }
 
-    const qtChannel = await guild?.channels.create("q-" + (maxQtChannel + 1), {
+    if (quarantineId === -1) {
+      return;
+    }
+
+    const qtChannel = await guild?.channels.create("q-" + quarantineId, {
       reason: "Quarantine for user " + member.displayName + " requested by " + this.message.member?.displayName,
       permissionOverwrites: [{
         type: "member",
@@ -95,11 +96,11 @@ export class SuspendDiscordCommand extends DiscordCommand {
     }
   }
 
-  private async persistQuarantine(member: GuildMember, reason: string): Promise<number> {
+  private async persistQuarantine(member: GuildMember, moderator: GuildMember, reason: string): Promise<number> {
     const { quarantineRepository } = this.dependencies.repositoryRegistry;
 
-    const moderatorUserId = await this.getCoalescedUserId(member.id);
     const offenderUserId = await this.getCoalescedUserId(member.id);
+    const moderatorUserId = await this.getCoalescedUserId(moderator.id);
 
     return quarantineRepository.create(offenderUserId, moderatorUserId, reason);
   }
@@ -109,7 +110,8 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const user = await userRepository.getByDiscordId(discordUserId);
     if (user) return user.user_id;
 
-    return userRepository.create({ discordUserId: discordUserId });
+    const insertResult = await userRepository.create({ discordUserId: discordUserId });
+    return insertResult;
   }
 
   public async validate(): Promise<boolean> {
