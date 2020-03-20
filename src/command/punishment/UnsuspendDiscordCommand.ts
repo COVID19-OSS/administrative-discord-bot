@@ -1,9 +1,9 @@
 import { DiscordCommand } from "../DiscordCommand";
-import {MessageEmbed} from "discord.js";
+import {MessageEmbed, TextChannel} from "discord.js";
+import { REPLACE_MENTION_REGEX } from "../../Constants";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES } = process.env;
 
-const REPLACE_MENTION_REGEX = /[<>!@]/g;
 const AUTHORIZED_ROLES = QUARANTINE_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 
 export class UnsuspendDiscordCommand extends DiscordCommand {
@@ -12,13 +12,14 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     const { quarantineRepository, userRepository } = this.dependencies.repositoryRegistry;
     let toUnQuarantine;
     if (this.args.length === 0) {
-      if (!this.messageChannel.name.startsWith("q-")) {
-        await this.messageChannel.send({
+      const messageChannel = this.message.channel as TextChannel;
+      if (!messageChannel.name.startsWith("q-")) {
+        await this.message.channel.send({
           embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]")
         });
         return;
       }
-      const toUnQuarantineUser = await userRepository.getOffenderByDiscordChannel(this.messageChannel.id);
+      const toUnQuarantineUser = await userRepository.getOffenderByDiscordChannel(this.message.channel.id);
       if (toUnQuarantineUser) {
         toUnQuarantine = toUnQuarantineUser.discord_id;
       }
@@ -28,7 +29,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
     const guild = this.message.guild;
     const member = toUnQuarantine ? guild?.member(toUnQuarantine) : null;
     if (!member) {
-      await this.messageChannel.send({
+      await this.message.channel.send({
         embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.").setDescription("Usage: " + DISCORD_PREFIX + "unsuspend [mention/id]")
       });
       return;
@@ -36,7 +37,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
 
     const userSuspendedRole = member.roles.cache.filter(role => role.name === "Suspended").first();
     if (!userSuspendedRole) {
-      await this.messageChannel.send({
+      await this.message.channel.send({
         embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("An error was encountered.").setDescription("The user is not suspended.")
       });
       return;
@@ -49,7 +50,7 @@ export class UnsuspendDiscordCommand extends DiscordCommand {
       await member.roles.set(roles);
     }
 
-    await this.messageChannel.send({
+    await this.message.channel.send({
       embed: new MessageEmbed().setTitle("Un-Suspend").setFooter("Success!").setDescription("The user has been un-suspended.")
     });
 

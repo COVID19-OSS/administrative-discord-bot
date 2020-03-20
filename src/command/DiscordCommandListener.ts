@@ -18,6 +18,7 @@ export class DiscordCommandListener {
   private async handleDiscordCommand(message: Message): Promise<void> {
     if (!message.content.startsWith(DISCORD_PREFIX!) || message.author.bot || message.channel.type !== "text") return;
 
+    // Filter the args with no length to solve the problem when a space character is entered and then a user's name is clicked on when using mobile
     const args: Array<string> = message.content?.slice(DISCORD_PREFIX!.length).split(" ").filter((arg) => arg.length !== 0);
     const command = args.shift()?.toLowerCase();
 

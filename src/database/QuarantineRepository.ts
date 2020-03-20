@@ -16,8 +16,8 @@ export class QuarantineRepository extends Repository {
     return result.rowCount > 0 ? result.rows[0] : null;
   }
 
-  public async getFiveMostRecentByOffenderDiscordId(offenderDiscordId: string): Promise<Array<Quarantine>> {
-    const statement = "SELECT q.* FROM quarantines q INNER JOIN users u on q.offender_user_id = u.user_id WHERE u.discord_id = $1 ORDER BY q.created_at DESC LIMIT 5";
+  public async getMultipleMostRecentByOffenderDiscordId(offenderDiscordId: string, amountToFetch: number): Promise<Array<Quarantine>> {
+    const statement = "SELECT q.* FROM quarantines q INNER JOIN users u on q.offender_user_id = u.user_id WHERE u.discord_id = $1 ORDER BY q.created_at DESC LIMIT " + amountToFetch;
     const result = await this.postgresDriver.query(statement, [offenderDiscordId]);
     return result.rows;
   }

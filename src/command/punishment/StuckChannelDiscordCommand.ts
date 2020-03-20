@@ -1,5 +1,5 @@
 import { DiscordCommand } from "../DiscordCommand";
-import {MessageEmbed} from "discord.js";
+import {MessageEmbed, TextChannel} from "discord.js";
 
 const { QUARANTINE_ROLES } = process.env;
 
@@ -7,7 +7,7 @@ export class StuckChannelDiscordCommand extends DiscordCommand {
   static readonly AUTHORIZED_ROLES = QUARANTINE_ROLES!.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 
   public async execute(): Promise<void> {
-    await this.messageChannel.delete("Cleanup quarantined channel.");
+    await this.message.channel.delete("Cleanup quarantined channel.");
   }
 
   public async validate(): Promise<boolean> {
@@ -21,8 +21,9 @@ export class StuckChannelDiscordCommand extends DiscordCommand {
       return false;
     }
 
-    if (!this.messageChannel.name.startsWith("q-")) {
-      await this.messageChannel.send({
+    const messageChannel = this.message.channel as TextChannel;
+    if (!messageChannel.name.startsWith("q-")) {
+      await this.message.channel.send({
         embed: new MessageEmbed().setTitle("Stuck Channel").setFooter("An error was encountered.").setDescription("This can only be used in quarantine channels.")
       });
       return false;

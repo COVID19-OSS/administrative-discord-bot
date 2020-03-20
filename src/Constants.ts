@@ -1,0 +1,1 @@
+export const REPLACE_MENTION_REGEX = /[<>!@]/g;
