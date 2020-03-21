@@ -56,7 +56,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
       embed: new MessageEmbed().setTitle("Notice").setDescription("You have been suspended for breaking the #rules. Please take a moment to go through them.")
     });
 
-    await quarantineRepository.updateChannelId(quarantineId, qtChannel.id)
+    await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
   }
 
   public async validate(): Promise<boolean> {
