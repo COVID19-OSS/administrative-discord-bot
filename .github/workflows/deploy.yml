@@ -20,7 +20,7 @@ jobs:
           echo $GITHUB_SHA > $GITHUB_WORKSPACE/site/_meta
 
       - name: Build container image
-        run: docker build -t covid19-oss/administrative-discord-bot:$(echo $GITHUB_SHA | head -c7) .
+        run: docker build -t covid19oss/administrative-discord-bot:$(echo $GITHUB_SHA | head -c7) .
 
       - name: Docker Login
         env:
@@ -29,10 +29,10 @@ jobs:
         run: docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD
 
       - name: Push image to Docker Hub
-        run: docker push covid19-oss/administrative-discord-bot
+        run: docker push covid19oss/administrative-discord-bot
 
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|covid19-oss/administrative-discord-bot:'${TAG}'|' $GITHUB_WORKSPACE/.k8/deployment.yml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|covid19oss/administrative-discord-bot:'${TAG}'|' $GITHUB_WORKSPACE/.k8/deployment.yml
 
       - name: Save DigitalOcean kubeconfig
         uses: digitalocean/action-doctl@master
