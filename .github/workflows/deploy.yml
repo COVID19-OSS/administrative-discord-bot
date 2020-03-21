@@ -47,5 +47,6 @@ jobs:
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig create secret generic prod-discord-secret --from-literal=token=${{ secrets.PRODUCTION_DISCORD_TOKEN }}
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -f $GITHUB_WORKSPACE/.k8/deployment.yml
 
+
       - name: Verify deployment
         run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deployment/administrative-discord-bot
