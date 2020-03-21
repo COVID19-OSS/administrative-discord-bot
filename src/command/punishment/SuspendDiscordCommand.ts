@@ -45,12 +45,6 @@ export class SuspendDiscordCommand extends DiscordCommand {
 
     if (!qtChannel) throw Error("Quarantine channel not found");
     await qtChannel.lockPermissions();
-    await qtChannel.overwritePermissions([
-      {
-        id: member.id,
-        allow: ["VIEW_CHANNEL"],
-      },
-    ], "Set channel permissions.");
     await qtChannel.send({
       embed: new MessageEmbed().setTitle("Suspend").setDescription(`You have been suspended, <@${member.id}>.\nReason: ${reasonProvided || "None"}`)
     });
