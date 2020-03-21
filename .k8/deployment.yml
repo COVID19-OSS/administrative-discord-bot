@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: administrative-discord-bot-deployment
+  labels:
+    app: administrative-discord-bot
+spec:
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: administrative-discord-bot
+    spec:
+      containers:
+        - name: administrative-discord-bot
+          image: covid19-oss/administrative-discord-bot:latest
+          env:
+            - name: DB_HOST
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret
+                  key: hostname
+            - name: DB_PORT
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret
+                  key: port
+            - name: DB_USER
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret
+                  key: username
+            - name: DB_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret
+                  key: password
+            - name: DB_NAME
+              valueFrom:
+                secretKeyRef:
+                  name: prod-db-secret
+                  key: database
+            - name: DISCORD_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: prod-discord-secret
+                  key: token
+            - name: PGSSLMODE
+              value: "require"
+            - name: DISCORD_PREFIX
+              value: ">"
+            - name: QUARANTINE_ROLES
+              value: "Administrator,Temp Mod,Discord Moderation"
+            - name: STAFF_ROLES
+              value: "Administrator,Temp Mod,Discord Moderation,Trusted User"
