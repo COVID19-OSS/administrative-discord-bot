@@ -40,14 +40,17 @@ export class SuspendDiscordCommand extends DiscordCommand {
 
     const qtChannel = await guild?.channels.create("q-" + quarantineId, {
       reason: `Quarantine for user ${member.displayName} requested by ${this.message.member.displayName}`,
-      permissionOverwrites: [{
-        allow: ["VIEW_CHANNEL"],
-        id: member.id
-      }],
       parent: qtCategory.id
     });
 
     if (!qtChannel) throw Error("Quarantine channel not found");
+    await qtChannel.lockPermissions();
+    await qtChannel.overwritePermissions([
+      {
+        id: member.id,
+        allow: ["VIEW_CHANNEL"],
+      },
+    ], "Set channel permissions.");
     await qtChannel.send({
       embed: new MessageEmbed().setTitle("Suspend").setDescription(`You have been suspended, <@${member.id}>.\nReason: ${reasonProvided || "None"}`)
     });
