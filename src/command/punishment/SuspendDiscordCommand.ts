@@ -41,9 +41,8 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const qtChannel = await guild?.channels.create("q-" + quarantineId, {
       reason: `Quarantine for user ${member.displayName} requested by ${this.message.member.displayName}`,
       permissionOverwrites: [{
-        type: "member",
         allow: ["VIEW_CHANNEL"],
-        id: qtCategory.id
+        id: member.id
       }],
       parent: qtCategory.id
     });
