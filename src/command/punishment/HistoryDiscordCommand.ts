@@ -1,4 +1,5 @@
 import { MessageEmbed } from "discord.js";
+import { DateTime } from "luxon";
 
 import { DiscordCommand } from "../DiscordCommand";
 
@@ -25,7 +26,8 @@ export class HistoryDiscordCommand extends DiscordCommand {
     /* Build an array of message */
     const historyMessages = quarantines.reduce((historyMessages: Array<string>, quarantine) => {
       const moderator = quarantineModerators.find(user => user?.user_id === quarantine.moderator_user_id);
-      historyMessages.push(`${quarantine.created_at.toLocaleString()} by <@${moderator?.discord_id!}> for ${quarantine.reason || "None"}`);
+      const createdAt = DateTime.fromJSDate(quarantine.created_at, { zone: "utc" });
+      historyMessages.push(`${createdAt.toRelative()} by <@${moderator?.discord_id!}> for ${quarantine.reason || "None"}`);
       return historyMessages;
     }, []);
 
