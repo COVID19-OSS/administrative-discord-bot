@@ -48,6 +48,11 @@ spec:
                 secretKeyRef:
                   name: prod-discord-secret
                   key: token
+            - name: VERIFICATION_CHANNEL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: prod-discord-secret
+                  key: verify_channel_id
             - name: PGSSLMODE
               value: "require"
             - name: DISCORD_PREFIX
@@ -56,3 +61,5 @@ spec:
               value: "Administrator,Temp Mod,Discord Moderation"
             - name: STAFF_ROLES
               value: "Administrator,Temp Mod,Discord Moderation,Trusted User"
+            - name: VERIFIED_ROLE
+              value: "Default"

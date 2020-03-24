@@ -46,7 +46,7 @@ jobs:
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig delete secret prod-db-secret
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig create secret generic prod-db-secret --from-literal=username=${{ secrets.PRODUCTION_DATABASE_USERNAME }} --from-literal=password=${{ secrets.PRODUCTION_DATABASE_PASSWORD }} --from-literal=hostname=${{ secrets.PRODUCTION_DATABASE_HOSTNAME }} --from-literal=port=${{ secrets.PRODUCTION_DATABASE_PORT }} --from-literal=database=${{ secrets.PRODUCTION_DATABASE_DATABASE }}
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig delete secret prod-discord-secret
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig create secret generic prod-discord-secret --from-literal=token=${{ secrets.PRODUCTION_DISCORD_TOKEN }}
+          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig create secret generic prod-discord-secret --from-literal=token=${{ secrets.PRODUCTION_DISCORD_TOKEN }} --from-literal=verify_channel_id=${{ secrets.PRODUCTION_VERIFICATION_CHANNEL_ID }}
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -f $GITHUB_WORKSPACE/.k8/deployment.yml
 
       - name: Verify deployment
