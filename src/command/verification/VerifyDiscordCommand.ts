@@ -19,7 +19,11 @@ export class VerifyDiscordCommand extends DiscordCommand {
     if (!memberRoles) throw Error("No member roles found");
 
     memberRoles.set(verifiedRole?.id, verifiedRole);
-    await this.message.member?.roles.set(memberRoles, "User Verified");
+
+    await Promise.all([
+      this.message.member?.roles.set(memberRoles, "User Verified"),
+      this.message.channel.send(new MessageEmbed().setTitle("Verification Success").setDescription(`${this.message.member} you have been verified!`))
+    ]);
   }
 
   public async validate(): Promise<boolean> {
