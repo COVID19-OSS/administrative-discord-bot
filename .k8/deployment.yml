@@ -63,3 +63,5 @@ spec:
               value: "Administrator,Temp Mod,Discord Moderation,Trusted User"
             - name: VERIFIED_ROLE
               value: "Default"
+            - name: SUSPENDED_ROLE
+              value: "Suspended"

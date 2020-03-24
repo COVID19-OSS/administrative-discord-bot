@@ -1,7 +1,7 @@
 import { DiscordCommand } from "../DiscordCommand";
 import { MessageEmbed } from "discord.js";
 
-const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE } = process.env;
+const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE, SUSPENDED_ROLE } = process.env;
 
 /**
  * Verification Command
@@ -15,14 +15,19 @@ export class VerifyDiscordCommand extends DiscordCommand {
     const verifiedRole = this.message.guild?.roles.cache.filter(role => role.name === VERIFIED_ROLE).first();
     if (!verifiedRole) throw Error("No verified role found");
 
-    await this.message.member?.roles.set([verifiedRole], "User Verified");
+    const memberRoles = this.message.member?.roles.cache;
+    if (!memberRoles) throw Error("No member roles found");
+
+    memberRoles.set(verifiedRole?.id, verifiedRole);
+    await this.message.member?.roles.set(memberRoles, "User Verified");
   }
 
   public async validate(): Promise<boolean> {
     if (this.message.channel.id !== VERIFICATION_CHANNEL_ID) return false;
     if (!this.message.member) return false;
+    if (this.message.member.roles.cache.some(role => role.name === SUSPENDED_ROLE)) return false;
     if (this.message.member.roles.cache.some(role => role.name === VERIFIED_ROLE)) {
-      await this.message.channel.send(new MessageEmbed().setTitle("Verification Error").setDescription(`${this.message.member}, you already are verified`));
+      await this.message.channel.send(new MessageEmbed().setTitle("Verification Error").setDescription(`${this.message.member}, you already are verified!`));
       return false;
     }
     return true;
