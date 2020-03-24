@@ -4,5 +4,5 @@ export enum DiscordCommandType {
   SUSPEND = "suspend",
   UNSUSPEND = "unsuspend",
   HELP = "help",
-  VERIFY = "verify"
+  VERIFY = "ihavereadtherules"
 }

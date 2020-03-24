@@ -5,9 +5,9 @@ import { DiscordCommand } from "./DiscordCommand";
 
 import { StuckChannelDiscordCommand } from "./punishment/StuckChannelDiscordCommand";
 import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
-import { VerifyDiscordCommand } from "./verification/VerifyDiscordCommand";
 import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
 import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
+import { VerifyDiscordCommand } from "./verification/VerifyDiscordCommand";
 import { HelpDiscordCommand } from "./help/HelpDiscordCommand";
 
 import { CommandDependencies } from "../definitions/dependencies/CommandDependencies";
