@@ -3,7 +3,7 @@ import { Channel, GuildMember, MessageEmbed } from "discord.js";
 import { DiscordCommand } from "../DiscordCommand";
 
 import { REPLACE_MENTION_REGEX } from "../../Constants";
-const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES } = process.env;
+const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES, SUSPENDED_ROLE, VERIFIED_ROLE } = process.env;
 
 const AUTHORIZED_ROLES = QUARANTINE_ROLES?.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 const PROTECTED_ROLES = STAFF_ROLES?.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
@@ -20,8 +20,8 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const member = targetDiscordUserId ? guild?.member(targetDiscordUserId) : null;
     if (!member) throw Error("User not in guild after validation");
 
-    const roles = member.roles.cache.filter(role => role.name !== "Default");
-    const suspendedRole = guild?.roles.cache.filter(role => role.name === "Suspended").first();
+    const roles = member.roles.cache.filter(role => role.name !== VERIFIED_ROLE);
+    const suspendedRole = guild?.roles.cache.filter(role => role.name === SUSPENDED_ROLE).first();
 
     if (suspendedRole) {
       roles.set(suspendedRole?.id, suspendedRole);
@@ -91,7 +91,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
       return false;
     }
     /* Target user is not already suspended */
-    const userSuspendedRole = member.roles.cache.filter(role => role.name === "Suspended").first();
+    const userSuspendedRole = member.roles.cache.filter(role => role.name === SUSPENDED_ROLE).first();
     if (userSuspendedRole) {
       await this.message.channel.send({
         embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.").setDescription("The user has already been suspended.")

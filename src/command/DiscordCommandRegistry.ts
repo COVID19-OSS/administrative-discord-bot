@@ -1,15 +1,17 @@
+import { Message } from "discord.js";
+
 import { DiscordCommandType } from "./DiscordCommandType";
 import { DiscordCommand } from "./DiscordCommand";
 
-import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
 import { StuckChannelDiscordCommand } from "./punishment/StuckChannelDiscordCommand";
-import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
 import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
+import { VerifyDiscordCommand } from "./verification/VerifyDiscordCommand";
+import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
+import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
 import { HelpDiscordCommand } from "./help/HelpDiscordCommand";
 
 import { CommandDependencies } from "../definitions/dependencies/CommandDependencies";
 
-import {Message} from "discord.js";
 
 export class DiscordCommandRegistry {
   private static getRegistry(): Map<string, DiscordCommand> {
@@ -19,6 +21,7 @@ export class DiscordCommandRegistry {
     registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.UNSUSPEND, UnsuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.HELP, HelpDiscordCommand.prototype);
+    registry.set(DiscordCommandType.VERIFY, VerifyDiscordCommand.prototype);
     return registry;
   }
 

@@ -3,5 +3,6 @@ export enum DiscordCommandType {
   STUCK_CHANNEL = "stuckchannel",
   SUSPEND = "suspend",
   UNSUSPEND = "unsuspend",
-  HELP = "help"
+  HELP = "help",
+  VERIFY = "verify"
 }
