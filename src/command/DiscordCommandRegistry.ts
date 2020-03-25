@@ -3,7 +3,9 @@ import { Message } from "discord.js";
 import { DiscordCommandType } from "./DiscordCommandType";
 import { DiscordCommand } from "./DiscordCommand";
 
+import { CycleVerificationCodeDiscordCommand } from "./verification/CycleVerificationCodeDiscordCommand";
 import { StuckChannelDiscordCommand } from "./punishment/StuckChannelDiscordCommand";
+import { RefreshRulesDiscordCommand } from "./rules/RefreshRulesDiscordCommand";
 import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
 import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
 import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
@@ -16,12 +18,14 @@ import { CommandDependencies } from "../definitions/dependencies/CommandDependen
 export class DiscordCommandRegistry {
   private static getRegistry(): Map<string, DiscordCommand> {
     const registry = new Map<DiscordCommandType, DiscordCommand>();
-    registry.set(DiscordCommandType.HISTORY, HistoryDiscordCommand.prototype);
+    registry.set(DiscordCommandType.CYCLE_VERIFICATION_CODE, CycleVerificationCodeDiscordCommand.prototype);
     registry.set(DiscordCommandType.STUCK_CHANNEL, StuckChannelDiscordCommand.prototype);
-    registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);
+    registry.set(DiscordCommandType.REFRESH_RULES, RefreshRulesDiscordCommand.prototype);
     registry.set(DiscordCommandType.UNSUSPEND, UnsuspendDiscordCommand.prototype);
-    registry.set(DiscordCommandType.HELP, HelpDiscordCommand.prototype);
+    registry.set(DiscordCommandType.HISTORY, HistoryDiscordCommand.prototype);
+    registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.VERIFY, VerifyDiscordCommand.prototype);
+    registry.set(DiscordCommandType.HELP, HelpDiscordCommand.prototype);
     return registry;
   }
 

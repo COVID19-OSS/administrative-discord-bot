@@ -15,9 +15,11 @@ exports.up = (pgm) => {
     }
   });
   pgm.createIndex("verification_codes", ["code"]);
+  pgm.createIndex("verification_codes", ["created_at"]);
 };
 
 exports.down = (pgm) => {
   pgm.dropIndex("verification_codes", ["code"]);
+  pgm.dropIndex("verification_codes", ["created_at"]);
   pgm.dropTable("verification_codes");
 };

@@ -7,6 +7,7 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "migrate": "node-pg-migrate",
+    "prestart": "npm run migrate up",
     "lint": "eslint . --ext .ts,.tsx"
   },
   "repository": {
@@ -20,6 +21,7 @@
   },
   "homepage": "https://github.com/COVID19-OSS/administrative-discord-bot#readme",
   "devDependencies": {
+    "@types/chance": "^1.0.9",
     "@types/luxon": "^1.21.0",
     "@types/mustache": "^4.0.1",
     "@types/ws": "^7.2.3",
@@ -32,6 +34,7 @@
   },
   "dependencies": {
     "bind-decorator": "^1.0.11",
+    "chance": "^1.1.4",
     "discord.js": "^12.0.2",
     "luxon": "^1.22.0",
     "mustache": "^4.0.1",
