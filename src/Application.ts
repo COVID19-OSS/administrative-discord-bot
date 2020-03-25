@@ -1,7 +1,8 @@
 import { DiscordService } from "./services/DiscordService";
 import { PostgresDriver } from "./services/PostgresDriver";
-import { RepositoryRegistry } from "./database/RepositoryRegistry";
+import { RepositoryRegistry } from "./repository/RepositoryRegistry";
 import { DiscordCommandListener } from "./command/DiscordCommandListener";
+import { VerificationCodeService } from "./services/VerificationCodeService";
 
 export class Application {
   private readonly discordService: DiscordService;
@@ -11,8 +12,9 @@ export class Application {
     this.discordService = new DiscordService();
     this.postgresDriver = new PostgresDriver();
 
-    const databaseRegistry = new RepositoryRegistry(this.postgresDriver);
-    new DiscordCommandListener({ discordService: this.discordService, repositoryRegistry: databaseRegistry });
+    const repositoryRegistry = new RepositoryRegistry(this.postgresDriver);
+    const verificationCodeService = new VerificationCodeService(repositoryRegistry, this.discordService);
+    new DiscordCommandListener({ discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService });
   }
 
   public async start(): Promise<void> {

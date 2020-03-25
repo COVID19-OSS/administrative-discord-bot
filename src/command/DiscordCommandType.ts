@@ -4,5 +4,7 @@ export enum DiscordCommandType {
   SUSPEND = "suspend",
   UNSUSPEND = "unsuspend",
   HELP = "help",
-  VERIFY = "ihavereadtherules"
+  VERIFY = "ihavereadtherules",
+  REFRESH_RULES ="refreshrules",
+  CYCLE_VERIFICATION_CODE ="cycleverify"
 }

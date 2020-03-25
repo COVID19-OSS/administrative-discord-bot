@@ -1,0 +1,5 @@
+You can report any wrongdoers using: `?report namehere reasonhere`
+
+The moderation team will review the relevant the chat logs and will take action when required.
+
+In case this command does not work you can always `@` an online member of the staff, please only do this once abd refrain from spamming the staff!

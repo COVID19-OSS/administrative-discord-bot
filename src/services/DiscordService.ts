@@ -3,7 +3,7 @@ import { Client, Message } from "discord.js";
 const { DISCORD_TOKEN } = process.env;
 
 export class DiscordService {
-  private readonly discordInstance: Client;
+  public readonly discordInstance: Client;
 
   public constructor() {
     this.discordInstance = new Client();

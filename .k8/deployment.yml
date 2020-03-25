@@ -53,6 +53,11 @@ spec:
                 secretKeyRef:
                   name: prod-discord-secret
                   key: verify_channel_id
+            - name: RULES_CHANNEL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: prod-discord-secret
+                  key: rules_channel_id
             - name: PGSSLMODE
               value: "require"
             - name: DISCORD_PREFIX
@@ -65,3 +70,9 @@ spec:
               value: "Default"
             - name: SUSPENDED_ROLE
               value: "Suspended"
+            - name: RULES_ROLES
+              value: "Administrator,Discord Moderation"
+            - name: VERIFICATION_CODE_DURATION_SECONDS
+              value: "300"
+            - name: VERIFICATION_FALLBACK_DURATION_SECONDS
+              value: "30"
