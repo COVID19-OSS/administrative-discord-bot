@@ -1,12 +1,13 @@
 import { Chance } from "chance";
 import { DateTime } from "luxon";
 
-import { RepositoryRegistry } from "../repository/RepositoryRegistry";
-import { DiscordService } from "./DiscordService";
 import { Message, TextChannel } from "discord.js";
-import { RulesUtilities } from "../utilities/RulesUtilities";
 
-const { RULES_CHANNEL_ID } = process.env;
+import { RepositoryRegistry } from "../repository/RepositoryRegistry";
+import { RulesUtilities } from "../utilities/RulesUtilities";
+import { DiscordService } from "./DiscordService";
+
+const { RULES_CHANNEL_ID, VERIFICATION_CODE_DURATION_SECONDS } = process.env;
 
 export class VerificationCodeService {
   public constructor(private readonly repositoryRegistry: RepositoryRegistry, private readonly discordService: DiscordService) {}
@@ -15,13 +16,10 @@ export class VerificationCodeService {
     const { verificationCodeRepository } = this.repositoryRegistry;
     const now = DateTime.utc();
 
-    const previousCodes = await verificationCodeRepository.getLastCodes(1);
-    if (previousCodes.length > 0 ) await verificationCodeRepository.updateValidTo(previousCodes[0].verification_code_id, now.toJSDate());
-
     const chance = new Chance();
     const nextCode = chance.string({ length: 5, numeric: true, alpha: true, casing: "lower" });
 
-    const validTo = now.plus({ minute: 1 });
+    const validTo = now.plus({ second: Number(VERIFICATION_CODE_DURATION_SECONDS) });
     await verificationCodeRepository.create(nextCode, now.toJSDate(), validTo.toJSDate());
 
     return nextCode;

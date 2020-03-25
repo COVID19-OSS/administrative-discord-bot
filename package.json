@@ -7,7 +7,6 @@
     "dev": "nodemon --exec ts-node src/index.ts",
     "build": "tsc",
     "migrate": "node-pg-migrate",
-    "prestart": "npm run migrate up",
     "lint": "eslint . --ext .ts,.tsx"
   },
   "repository": {
