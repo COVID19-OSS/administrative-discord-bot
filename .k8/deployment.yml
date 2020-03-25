@@ -42,7 +42,7 @@ spec:
               valueFrom:
                 secretKeyRef:
                   name: prod-db-secret
-                  key: database
+                  key: repository
             - name: DISCORD_TOKEN
               valueFrom:
                 secretKeyRef:

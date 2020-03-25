@@ -1,6 +1,6 @@
 import { DiscordService } from "./services/DiscordService";
 import { PostgresDriver } from "./services/PostgresDriver";
-import { RepositoryRegistry } from "./database/RepositoryRegistry";
+import { RepositoryRegistry } from "./repository/RepositoryRegistry";
 import { DiscordCommandListener } from "./command/DiscordCommandListener";
 
 export class Application {

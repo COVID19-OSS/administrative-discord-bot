@@ -1,4 +1,4 @@
-import { RepositoryRegistry } from "../../database/RepositoryRegistry";
+import { RepositoryRegistry } from "../../repository/RepositoryRegistry";
 import { DiscordService } from "../../services/DiscordService";
 
 export interface CommandDependencies {
