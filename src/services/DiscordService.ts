@@ -1,4 +1,4 @@
-import { Client, Message } from "discord.js";
+import { Client, GuildMember, Message } from "discord.js";
 
 const { DISCORD_TOKEN } = process.env;
 
@@ -17,8 +17,12 @@ export class DiscordService {
     return promise;
   }
 
-  public bindListener(handler: (message: Message) => Promise<void>): void {
+  public bindMessageListener(handler: (message: Message) => Promise<void>): void {
     this.discordInstance.on("message", handler);
+  }
+
+  public bindUserExitListener(handler: (member: GuildMember) => Promise<void>): void {
+    this.discordInstance.on("guildMemberRemove", handler);
   }
 
   public stop(): void {
