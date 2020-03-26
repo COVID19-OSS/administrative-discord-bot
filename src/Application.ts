@@ -7,6 +7,7 @@ import { ListenerDependencies } from "./definitions/dependencies/ListenerDepende
 
 import { DiscordCommandListener } from "./command/DiscordCommandListener";
 import { QuarantinedUserExitEventListener } from "./event/QuarantinedUserExitEventListener";
+import { CloseVerificationAttemptEventListener } from "./event/CloseVerificationAttemptEventListener";
 
 export class Application {
   private readonly discordService: DiscordService;
@@ -25,6 +26,7 @@ export class Application {
   private bindListeners(dependencies: ListenerDependencies): void {
     new DiscordCommandListener(dependencies);
     new QuarantinedUserExitEventListener(dependencies);
+    new CloseVerificationAttemptEventListener(dependencies);
   }
 
   public async start(): Promise<void> {

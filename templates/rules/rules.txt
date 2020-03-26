@@ -13,5 +13,5 @@ Only post unconfirmed posts in #covid-19-unconfirmed-discussion and conspiracies
 Don't use offensive language in your server nickname. Nicknames may be changed by Moderators if they're deemed unsuitable.
 No advertising, this includes DM'ing people!
 Doxing any of the members is not allowed, the same counts for stalking this is a big offense and will be reported to Discord ToS enforcement too.
-To receive access to our full Discord please type `>ihavereadtherules {{verifyCode}}` in the chatchannel #verify not reading the rules will not grant you access.
+To receive access to our full Discord please type `>ihavereadtherules {{verifyCode}}` in the chatchannel #verify not reading the rules will not grant you access **(there is a space between the command and the code)**.
 Use common sense.
