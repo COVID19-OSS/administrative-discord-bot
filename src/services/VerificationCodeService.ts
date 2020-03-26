@@ -17,7 +17,7 @@ export class VerificationCodeService {
     const now = DateTime.utc();
 
     const chance = new Chance();
-    const nextCode = chance.string({ length: 5, numeric: true, alpha: true, casing: "lower" });
+    const nextCode = chance.string({ length: 4, numeric: true, alpha: false, casing: "lower" });
 
     const validTo = now.plus({ second: Number(VERIFICATION_CODE_DURATION_SECONDS) });
     await verificationCodeRepository.create(nextCode, now.toJSDate(), validTo.toJSDate());

@@ -12,7 +12,7 @@ import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
 import { VerifyDiscordCommand } from "./verification/VerifyDiscordCommand";
 import { HelpDiscordCommand } from "./help/HelpDiscordCommand";
 
-import { CommandDependencies } from "../definitions/dependencies/CommandDependencies";
+import { ListenerDependencies } from "../definitions/dependencies/ListenerDependencies";
 
 
 export class DiscordCommandRegistry {
@@ -29,7 +29,7 @@ export class DiscordCommandRegistry {
     return registry;
   }
 
-  public static getCommand(command: string, args: Array<string>, message: Message, dependencies: CommandDependencies): DiscordCommand | null {
+  public static getCommand(command: string, args: Array<string>, message: Message, dependencies: ListenerDependencies): DiscordCommand | null {
     const registry = this.getRegistry();
 
     const CommandForType = registry.get(command.toLowerCase());

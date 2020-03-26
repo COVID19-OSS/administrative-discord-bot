@@ -1,8 +1,12 @@
-import { DiscordService } from "./services/DiscordService";
 import { PostgresDriver } from "./services/PostgresDriver";
+import { DiscordService } from "./services/DiscordService";
 import { RepositoryRegistry } from "./repository/RepositoryRegistry";
-import { DiscordCommandListener } from "./command/DiscordCommandListener";
 import { VerificationCodeService } from "./services/VerificationCodeService";
+
+import { ListenerDependencies } from "./definitions/dependencies/ListenerDependencies";
+
+import { DiscordCommandListener } from "./command/DiscordCommandListener";
+import { QuarantinedUserExitEventListener } from "./event/QuarantinedUserExitEventListener";
 
 export class Application {
   private readonly discordService: DiscordService;
@@ -14,7 +18,13 @@ export class Application {
 
     const repositoryRegistry = new RepositoryRegistry(this.postgresDriver);
     const verificationCodeService = new VerificationCodeService(repositoryRegistry, this.discordService);
-    new DiscordCommandListener({ discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService });
+
+    this.bindListeners({ discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService });
+  }
+
+  private bindListeners(dependencies: ListenerDependencies): void {
+    new DiscordCommandListener(dependencies);
+    new QuarantinedUserExitEventListener(dependencies);
   }
 
   public async start(): Promise<void> {

@@ -2,7 +2,7 @@ import { RepositoryRegistry } from "../../repository/RepositoryRegistry";
 import { DiscordService } from "../../services/DiscordService";
 import { VerificationCodeService } from "../../services/VerificationCodeService";
 
-export interface CommandDependencies {
+export interface ListenerDependencies {
   repositoryRegistry: RepositoryRegistry;
   discordService: DiscordService;
   verificationCodeService: VerificationCodeService;
