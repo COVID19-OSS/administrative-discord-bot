@@ -1,17 +1,18 @@
-Use the correct channel for the correct discussion. (You can check the channel descriptions next to the name of the channel and pinned messages.)
-No fear mongering. (This includes spreading FUD, making others scared or spreading fake absurd facts) in any channels.
-Do not spamtag others or Staff.
-Listen to the subreddit rules.
-Ban Appeals go through the subreddit, don't DM or tag Subreddit Moderators.
-Give your articles proper titles.
-The main language used in text channels is English, we don't allow any other languages yet.
-Have respect for each other, don't discriminate. Racism, religious attacks, blanket statements of populations will not be tolerated.
-Don't be mean. Offensive language, harassment, excessive cursing (swearing is allowed, bad words which may hurt others or directed to someone are not!) and other bad behaviour won't be tolerated.
-Don't post any material, including text chats, intended to harm or offend people.
-Always listen to our Staff.
-Only post unconfirmed posts in #covid-19-unconfirmed-discussion and conspiracies/theories on #theories-conspiracies-rumors
-Don't use offensive language in your server nickname. Nicknames may be changed by Moderators if they're deemed unsuitable.
-No advertising, this includes DM'ing people!
-Doxing any of the members is not allowed, the same counts for stalking this is a big offense and will be reported to Discord ToS enforcement too.
-To receive access to our full Discord please type `>ihavereadtherules {{verifyCode}}` in the chatchannel #verify not reading the rules will not grant you access **(there is a space between the command and the code)**.
-Use common sense.
+Use the correct channel for your discussion.
+You may not spam channels or spam reactions.
+English is the main language of this server at this time.
+You should have respect for your fellow users and staff, do not insult or demean them.
+Excessive cursing and foul language is not permitted. Swearing/slang directed at others is not permitted.
+You may not claim that you have COVID19 or SARS-CoV-2 unless you provide documentation to an administrator.
+You may not solicit donations for any organization or inundate others with links/resources (this includes direct messaging).
+Racism, homophobia, sexism, or religious attacks are not permitted; do not maliciously offend others or discriminate against groups of people.
+Calls for violence or dooming is not permitted.
+You may not discuss political matters outside of the debate channel, especially during streams.
+You may not discuss conspiracy theories and rumors outside of the conspiracies channel.
+You absolutely may not reveal any personally identifiable information of others (doxxing), this will result in an immediate ban and is subject to further consequences with Discord.
+Follow the directions of Moderators, Trusted Users and Medical Professionals.
+This Discord is not the place for any Reddit related ban appeals or otherwise. Please do not contact our staff about anything related to Reddit.
+Back up any questionable claims with articles or proof. If you can't provide proof we will redirect you to #theories-conspirancies-rumors or #covid19-unconfirmed-discussion
+If you're suspected to be in a raid server/DM people to join your server you might get banned.
+Warn/ban appeals reach out to Nightmare or Volthax.
+If you agree to follow these rules you may type `ihavereadtherules {{verifyCode}}` in the #verify channel. (Please keep in mind there is a space between the command and the secret code).
