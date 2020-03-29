@@ -1,6 +1,6 @@
 {
   "name": "@covid19/administrative-discord-bot",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "private": true,
   "description": "this service will handle administrative automation on the covid19 discord server",
   "scripts": {
