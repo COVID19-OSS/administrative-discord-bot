@@ -1,0 +1,5 @@
+{{offenderUser}} you have been suspended by {{moderatorUser}} for `{{quarantineReason}}. This is not a ban, this channel will be where you to talk with our staff about this issue.
+
+You must respond within {{suspendTimeToRespondMinutes}} minutes, otherwise further action may be taken against you in your absence.
+
+Please take some time to reflect on what occurred and refresh yourself on the {{rulesChannelId}}. We expect that you will be honest and forthcoming while you are here.

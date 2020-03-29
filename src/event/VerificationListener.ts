@@ -14,7 +14,7 @@ export class VerificationListener extends EventListener {
 
   @bind
   private async handleVerificationMessage(message: Message): Promise<void> {
-    if (message.content.startsWith(DiscordCommandType.VERIFY)) {
+    if (message.content.toLowerCase().startsWith(DiscordCommandType.VERIFY)) {
       const args = message.content.split(" ").slice(1);
       const commandExecutor = DiscordCommandRegistry.getCommand(DiscordCommandType.VERIFY, args, message, this.dependencies);
 

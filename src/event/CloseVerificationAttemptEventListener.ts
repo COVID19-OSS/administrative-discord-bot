@@ -27,7 +27,9 @@ export class CloseVerificationAttemptEventListener extends EventListener {
         .setColor("#d4443f")
         .setFooter("I'm a robot. Beep boop.");
 
-      if (message.content.startsWith("!verify") || message.content.startsWith("?verify") || message.content.startsWith("verify")) {
+      const wrongVerifications = ["!verify", "?verify", "verify", `/${DiscordCommandType.VERIFY}`, "#verify"];
+
+      if (wrongVerifications.filter(wrongVerify => message.content.toLowerCase().startsWith(wrongVerify)).length > 0) {
         const description = `Hey there ${message.author} we noticed that you might be having some difficulty verifying your account.\n\n`
           + "The way in which you tried to verify yourself does not work on our server. Please read the rules carefully and you will find out how you can verify your account.\n\n"
           + "If you do not read the rules you might be subject to removal from our community.";
@@ -37,7 +39,7 @@ export class CloseVerificationAttemptEventListener extends EventListener {
           message.delete()
         ]);
       }
-      else if (message.content.startsWith(DiscordCommandType.VERIFY) && missingSpace) {
+      else if (message.content.toLowerCase().startsWith(DiscordCommandType.VERIFY) && missingSpace) {
         const description = `Hey there ${message.author} we noticed that you might be having some difficulty verifying your account.\n\n`
           + `We think you need to add a space between the \`${DiscordCommandType.VERIFY} code\`, this will allow our system to pick up your verification correctly. We look forward to you joining our community!\n\n`
           + "Please refrain from contacting our staff if you have not read the rules, it might result in your removal from our community";
