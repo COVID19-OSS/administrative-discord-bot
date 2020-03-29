@@ -1,15 +1,24 @@
+import * as fs from "fs";
+import * as path from "path";
+import * as util from "util";
+import * as mustache from "mustache";
+
 import { Channel, GuildMember, MessageEmbed } from "discord.js";
 
 import { DiscordCommand } from "../DiscordCommand";
 
 import { REPLACE_MENTION_REGEX } from "../../Constants";
-const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES, SUSPENDED_ROLE, VERIFIED_ROLE } = process.env;
+
+const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES, SUSPENDED_ROLE, VERIFIED_ROLE, SUSPENDED_TIME_TO_RESPOND_MINUTES, RULES_CHANNEL_ID } = process.env;
 
 const AUTHORIZED_ROLES = QUARANTINE_ROLES?.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 const PROTECTED_ROLES = STAFF_ROLES?.split(",").map((s: string) => s.trim()) || [ "Administrator" ];
 
-export class SuspendDiscordCommand extends DiscordCommand {
+const NOTICE_PATH = path.join(__dirname, "../../../templates/suspend/notice.txt");
 
+const readFileAsync = util.promisify(fs.readFile);
+
+export class SuspendDiscordCommand extends DiscordCommand {
   public async execute(): Promise<void> {
     const { quarantineRepository } = this.dependencies.repositoryRegistry;
     const targetDiscordUserId = this.args[0].replace(REPLACE_MENTION_REGEX, "");
@@ -45,12 +54,15 @@ export class SuspendDiscordCommand extends DiscordCommand {
 
     if (!qtChannel) throw Error("Quarantine channel not found");
     await qtChannel.updateOverwrite(member, { VIEW_CHANNEL: true });
-    await qtChannel.send({
-      embed: new MessageEmbed().setTitle("Suspend").setDescription(`You have been suspended, <@${member.id}>.\nReason: ${reasonProvided || "None"}`)
-    });
-    await qtChannel.send({
-      embed: new MessageEmbed().setTitle("Notice").setDescription("You have been suspended for breaking the #rules. Please take a moment to go through them.")
-    });
+    const renderedDescription = await this.getNoticeDescription(member.id, this.message.member.id, reasonProvided);
+
+    const noticeEmbed = new MessageEmbed()
+      .setTitle(":warning: Quarantine Notice")
+      .setColor("#d4b350")
+      .setDescription(renderedDescription)
+      .setFooter("I'm a robot. Beep boop.");
+
+    await qtChannel.send({ embed: noticeEmbed, content: `${member}` });
 
     await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
   }
@@ -69,7 +81,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
     /* Argument count */
     if (this.args.length === 0) {
       await this.message.channel.send({
-        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.").setDescription(`Usage: ${DISCORD_PREFIX} suspend [mention/id] <reason>`)
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.").setDescription(`Usage: \`${DISCORD_PREFIX}suspend [mention/id] <reason>\``)
       });
       return false;
     }
@@ -79,7 +91,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const member = targetDiscordUserId ? guild?.member(targetDiscordUserId) : null;
     if (!member) {
       await this.message.channel.send({
-        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.").setDescription(`Usage: ${DISCORD_PREFIX} suspend [mention/id] <reason>`)
+        embed: new MessageEmbed().setTitle("Suspend").setFooter("An error was encountered.").setDescription(`Usage: \`${DISCORD_PREFIX}suspend [mention/id] <reason>\``)
       });
       return false;
     }
@@ -116,5 +128,16 @@ export class SuspendDiscordCommand extends DiscordCommand {
     if (user) return user.user_id;
 
     return await userRepository.create({ discordUserId: discordUserId });
+  }
+
+  private async getNoticeDescription(offenderUserId: string, moderatorUserId: string, quarantineReason: string): Promise<string> {
+    const rawNotice = await readFileAsync(NOTICE_PATH, "utf8");
+    return mustache.render(rawNotice, {
+      offenderUserId,
+      moderatorUserId,
+      quarantineReason,
+      suspendTimeToRespondMinutes: SUSPENDED_TIME_TO_RESPOND_MINUTES,
+      rulesChannelId: RULES_CHANNEL_ID
+    });
   }
 }

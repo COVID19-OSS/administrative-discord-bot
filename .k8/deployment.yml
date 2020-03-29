@@ -76,3 +76,5 @@ spec:
               value: "300"
             - name: VERIFICATION_FALLBACK_DURATION_SECONDS
               value: "30"
+            - name: SUSPENDED_TIME_TO_RESPOND_MINUTES
+              value: "30"
