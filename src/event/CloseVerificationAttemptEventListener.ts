@@ -27,9 +27,10 @@ export class CloseVerificationAttemptEventListener extends EventListener {
         .setColor("#d4443f")
         .setFooter("I'm a robot. Beep boop.");
 
-      const wrongVerifications = ["!verify", "?verify", "verify", `/${DiscordCommandType.VERIFY}`, "#verify"];
+      const wrongVerifications = ["!verify", "?verify", "verify", `/${DiscordCommandType.VERIFY}`, `!${DiscordCommandType.VERIFY}`];
+      const mentionedChannel = message.mentions.channels.some(channel => channel.id === VERIFICATION_CHANNEL_ID);
 
-      if (wrongVerifications.filter(wrongVerify => message.content.toLowerCase().startsWith(wrongVerify)).length > 0) {
+      if (wrongVerifications.filter(wrongVerify => message.content.toLowerCase().startsWith(wrongVerify)).length > 0 || mentionedChannel) {
         const description = `Hey there ${message.author} we noticed that you might be having some difficulty verifying your account.\n\n`
           + "The way in which you tried to verify yourself does not work on our server. Please read the rules carefully and you will find out how you can verify your account.\n\n"
           + "If you do not read the rules you might be subject to removal from our community.";
