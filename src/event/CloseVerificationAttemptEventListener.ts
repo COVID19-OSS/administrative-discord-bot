@@ -27,7 +27,7 @@ export class CloseVerificationAttemptEventListener extends EventListener {
         .setColor("#d4443f")
         .setFooter("I'm a robot. Beep boop.");
 
-      const wrongVerifications = ["!verify", "?verify", "/verify", "verify", `/${DiscordCommandType.VERIFY}`, `!${DiscordCommandType.VERIFY}`];
+      const wrongVerifications = ["!verify", "?verify", "/verify", "verify", "-verify", "i have read the rule", `/${DiscordCommandType.VERIFY}`, `!${DiscordCommandType.VERIFY}`];
       const mentionedChannel = message.mentions.channels.some(channel => channel.id === VERIFICATION_CHANNEL_ID);
 
       if (wrongVerifications.filter(wrongVerify => message.content.toLowerCase().startsWith(wrongVerify)).length > 0 || mentionedChannel) {
