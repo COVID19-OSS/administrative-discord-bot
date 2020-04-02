@@ -25,6 +25,10 @@ export class DiscordService {
     this.discordInstance.on("guildMemberRemove", handler);
   }
 
+  public bindUserJoinListener(handler: (member: GuildMember) => Promise<void>): void {
+    this.discordInstance.on("guildMemberAdd", handler);
+  }
+
   public stop(): void {
     this.discordInstance.destroy();
   }

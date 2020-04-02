@@ -58,6 +58,11 @@ spec:
                 secretKeyRef:
                   name: prod-discord-secret
                   key: rules_channel_id
+            - name: DISCORD_BOT_USER_ID
+              valueFrom:
+                secretKeyRef:
+                  name: prod-discord-secret
+                  key: discord_bot_user_id
             - name: PGSSLMODE
               value: "require"
             - name: DISCORD_PREFIX
