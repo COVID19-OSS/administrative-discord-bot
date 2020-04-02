@@ -6,7 +6,7 @@ import { EventListener } from "./EventListener";
 import { DiscordCommandType } from "../command/DiscordCommandType";
 import { ListenerDependencies } from "../definitions/dependencies/ListenerDependencies";
 
-const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE } = process.env;
+const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE, DISCORD_BOT_USER_ID } = process.env;
 
 export class CloseVerificationAttemptEventListener extends EventListener {
   public constructor(dependencies: ListenerDependencies) {
@@ -29,8 +29,9 @@ export class CloseVerificationAttemptEventListener extends EventListener {
 
       const wrongVerifications = ["!verify", "?verify", "/verify", "verify", "-verify", "i have read the rule", "!verification", `/${DiscordCommandType.VERIFY}`, `!${DiscordCommandType.VERIFY}`];
       const mentionedChannel = message.mentions.channels.some(channel => channel.id === VERIFICATION_CHANNEL_ID);
+      const mentionedBot = message.mentions.members ? message.mentions.members.some(member => member.user.id === DISCORD_BOT_USER_ID) : false;
 
-      if (wrongVerifications.filter(wrongVerify => message.content.toLowerCase().startsWith(wrongVerify)).length > 0 || mentionedChannel) {
+      if (wrongVerifications.filter(wrongVerify => message.content.toLowerCase().startsWith(wrongVerify)).length > 0 || mentionedChannel || mentionedBot) {
         const description = `Hey there ${message.author} we noticed that you might be having some difficulty verifying your account.\n\n`
           + "The way in which you tried to verify yourself does not work on our server. Please read the rules carefully and you will find out how you can verify your account.\n\n"
           + "If you do not read the rules you might be subject to removal from our community.";
