@@ -4,7 +4,7 @@ import util from "util";
 import mustache from "mustache";
 import bind from "bind-decorator";
 
-import { GuildMember, MessageEmbed } from "discord.js";
+import { GuildMember, MessageEmbed, TextChannel } from "discord.js";
 
 import { EventListener } from "./EventListener";
 import { MixPanelEvents } from "../const/analytics/MixPanelEvents";
@@ -14,7 +14,7 @@ const WELCOME_TEMPLATE_RELATIVE_PATH = "../../templates/welcome/welcome.txt";
 
 const readFileAsync = util.promisify(fs.readFile);
 
-const { RULES_CHANNEL_ID } = process.env;
+const { RULES_CHANNEL_ID, VERIFICATION_CHANNEL_ID } = process.env;
 
 export class UserJoinWelcomeEventListener extends EventListener {
   public constructor(dependencies: ListenerDependencies) {
@@ -33,7 +33,12 @@ export class UserJoinWelcomeEventListener extends EventListener {
         .setColor("#d4443f")
         .setThumbnail("https://i.imgur.com/UyieFtd.png")
         .setFooter("I'm a robot. Beep boop");
-      await member.send(embed).catch(() => undefined);
+
+      if (!VERIFICATION_CHANNEL_ID) return;
+
+      const verifyChannel = await this.dependencies.discordService.discordInstance.channels.fetch(VERIFICATION_CHANNEL_ID) as TextChannel;
+      await verifyChannel.send({ content: `<@${member.id}>`, embed: embed });
+
       analyticService.track(MixPanelEvents.USER_JOIN_WELCOME_MESSAGE, { "distinct_id": member.id });
     }
     catch (error) {
