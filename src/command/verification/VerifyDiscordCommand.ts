@@ -1,6 +1,7 @@
 import { DiscordCommand } from "../DiscordCommand";
 import { MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
+
 import { MixPanelEvents } from "../../const/analytics/MixPanelEvents";
 
 const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE, SUSPENDED_ROLE, VERIFICATION_FALLBACK_DURATION_SECONDS } = process.env;
