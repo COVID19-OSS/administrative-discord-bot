@@ -63,6 +63,11 @@ spec:
                 secretKeyRef:
                   name: prod-discord-secret
                   key: discord_bot_user_id
+            - name: MIXPANEL_TOKEN
+              valueFrom:
+                secretKeyRef:
+                  name: prod-analytics-secret
+                  key: mixpanel_token
             - name: PGSSLMODE
               value: "require"
             - name: DISCORD_PREFIX

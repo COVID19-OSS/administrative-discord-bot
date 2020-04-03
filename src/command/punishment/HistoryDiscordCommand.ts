@@ -3,7 +3,7 @@ import { DateTime } from "luxon";
 
 import { DiscordCommand } from "../DiscordCommand";
 
-import { REPLACE_MENTION_REGEX } from "../../Constants";
+import { REPLACE_MENTION_REGEX } from "../../const/RegexConstants";
 import { Quarantine } from "../../definitions/entities/Quarantine";
 import { User } from "../../definitions/entities/User";
 

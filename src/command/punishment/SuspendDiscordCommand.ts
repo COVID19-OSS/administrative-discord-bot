@@ -7,7 +7,8 @@ import { Channel, GuildMember, MessageEmbed } from "discord.js";
 
 import { DiscordCommand } from "../DiscordCommand";
 
-import { REPLACE_MENTION_REGEX } from "../../Constants";
+import { REPLACE_MENTION_REGEX } from "../../const/RegexConstants";
+import { MixPanelEvents } from "../../const/analytics/MixPanelEvents";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES, SUSPENDED_ROLE, VERIFIED_ROLE, SUSPENDED_TIME_TO_RESPOND_MINUTES, RULES_CHANNEL_ID } = process.env;
 
@@ -20,7 +21,7 @@ const readFileAsync = util.promisify(fs.readFile);
 
 export class SuspendDiscordCommand extends DiscordCommand {
   public async execute(): Promise<void> {
-    const { quarantineRepository } = this.dependencies.repositoryRegistry;
+    const { repositoryRegistry: { quarantineRepository }, analyticService } = this.dependencies;
     const targetDiscordUserId = this.args[0].replace(REPLACE_MENTION_REGEX, "");
 
     const reasonProvided: string = this.args.splice(1).join(" ");
@@ -65,6 +66,7 @@ export class SuspendDiscordCommand extends DiscordCommand {
     await qtChannel.send({ embed: noticeEmbed, content: `${member}` });
 
     await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
+    analyticService.track(MixPanelEvents.SUSPEND, { "distinct_id": this.message.author.id, "offending_id": member.id });
   }
 
   public async validate(): Promise<boolean> {

@@ -1,3 +1,5 @@
+import Mixpanel from "mixpanel";
+
 import { PostgresDriver } from "./services/PostgresDriver";
 import { DiscordService } from "./services/DiscordService";
 import { RepositoryRegistry } from "./repository/RepositoryRegistry";
@@ -11,6 +13,8 @@ import { CloseVerificationAttemptEventListener } from "./event/CloseVerification
 import { VerificationListener } from "./event/VerificationListener";
 import { UserJoinWelcomeEventListener } from "./event/UserJoinWelcomeEventListener";
 
+const { MIXPANEL_TOKEN } = process.env;
+
 export class Application {
   private readonly discordService: DiscordService;
   private readonly postgresDriver: PostgresDriver;
@@ -21,8 +25,9 @@ export class Application {
 
     const repositoryRegistry = new RepositoryRegistry(this.postgresDriver);
     const verificationCodeService = new VerificationCodeService(repositoryRegistry, this.discordService);
+    const analyticService = Mixpanel.init(MIXPANEL_TOKEN || "");
 
-    this.bindListeners({ discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService });
+    this.bindListeners({ discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService, analyticService });
   }
 
   private bindListeners(dependencies: ListenerDependencies): void {

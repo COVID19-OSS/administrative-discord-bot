@@ -2,6 +2,8 @@ import { DiscordCommand } from "../DiscordCommand";
 import { MessageEmbed } from "discord.js";
 import { DateTime } from "luxon";
 
+import { MixPanelEvents } from "../../const/analytics/MixPanelEvents";
+
 const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE, SUSPENDED_ROLE, VERIFICATION_FALLBACK_DURATION_SECONDS } = process.env;
 
 /**
@@ -13,6 +15,7 @@ const { VERIFICATION_CHANNEL_ID, VERIFIED_ROLE, SUSPENDED_ROLE, VERIFICATION_FAL
  */
 export class VerifyDiscordCommand extends DiscordCommand {
   public async execute(): Promise<void> {
+    const { analyticService } = this.dependencies;
     const verifiedRole = this.message.guild?.roles.cache.filter(role => role.name === VERIFIED_ROLE).first();
     if (!verifiedRole) throw Error("No verified role found");
 
@@ -26,10 +29,12 @@ export class VerifyDiscordCommand extends DiscordCommand {
       this.message.channel.send(new MessageEmbed().setTitle("Verification Success").setDescription(`${this.message.member} you have been verified!`)),
       this.message.delete()
     ]);
+
+    analyticService.track(MixPanelEvents.VERIFICATION_SUCCESS, { "distinct_id": this.message.author.id });
   }
 
   public async validate(): Promise<boolean> {
-    const { repositoryRegistry: { verificationCodeRepository }, verificationCodeService } = this.dependencies;
+    const { repositoryRegistry: { verificationCodeRepository }, verificationCodeService, analyticService } = this.dependencies;
 
     if (this.message.channel.id !== VERIFICATION_CHANNEL_ID) return false;
     if (!this.message.member) return false;
@@ -84,6 +89,7 @@ export class VerifyDiscordCommand extends DiscordCommand {
           this.message.channel.send(new MessageEmbed().setTitle("Verification Error").setDescription(`${this.message.author} The verification code you entered is expired.`)),
           this.message.delete()
         ]);
+        analyticService.track(MixPanelEvents.VERIFICATION_FAIL_EXPIRED, { "distinct_id": this.message.author.id });
         return false;
       }
     }
@@ -93,6 +99,7 @@ export class VerifyDiscordCommand extends DiscordCommand {
         this.message.channel.send(new MessageEmbed().setTitle("Verification Error").setDescription(`${this.message.author} The verification code you entered is not valid.`)),
         this.message.delete()
       ]);
+      analyticService.track(MixPanelEvents.VERIFICATION_FAIL_BAD_CODE, { "distinct_id": this.message.author.id });
       return false;
     }
   }

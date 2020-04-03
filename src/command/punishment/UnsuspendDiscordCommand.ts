@@ -1,6 +1,6 @@
 import { DiscordCommand } from "../DiscordCommand";
 import {MessageEmbed, TextChannel} from "discord.js";
-import { REPLACE_MENTION_REGEX } from "../../Constants";
+import { REPLACE_MENTION_REGEX } from "../../const/RegexConstants";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES } = process.env;
 
