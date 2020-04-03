@@ -7,6 +7,7 @@ import bind from "bind-decorator";
 import { GuildMember, MessageEmbed } from "discord.js";
 
 import { EventListener } from "./EventListener";
+import { MixPanelEvents } from "../const/analytics/MixPanelEvents";
 import { ListenerDependencies } from "../definitions/dependencies/ListenerDependencies";
 
 const WELCOME_TEMPLATE_RELATIVE_PATH = "../../templates/welcome/welcome.txt";
@@ -23,6 +24,7 @@ export class UserJoinWelcomeEventListener extends EventListener {
 
   @bind
   private async handleUserJoinWelcome(member: GuildMember): Promise<void> {
+    const { analyticService } = this.dependencies;
     try {
       const description = await this.getRenderedWelcomeMessage(member);
       const embed = new MessageEmbed()
@@ -32,6 +34,7 @@ export class UserJoinWelcomeEventListener extends EventListener {
         .setThumbnail("https://i.imgur.com/UyieFtd.png")
         .setFooter("I'm a robot. Beep boop");
       await member.send(embed).catch(() => undefined);
+      analyticService.track(MixPanelEvents.USER_JOIN_WELCOME_MESSAGE, { "distinct_id": member.id });
     }
     catch (error) {
       console.error("Could not handle user join welcome");
