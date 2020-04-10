@@ -14,5 +14,5 @@ Follow the directions of Moderators, Trusted Users and Medical Professionals.
 This Discord is not the place for any Reddit related ban appeals or otherwise. Please do not contact our staff about anything related to Reddit.
 Back up any questionable claims with articles or proof. If you can't provide proof we will redirect you to #theories-conspirancies-rumors or #covid19-unconfirmed-discussion
 If you're suspected to be in a raid server/DM people to join your server you might get banned.
-Warn/ban appeals reach out to Nightmare or Volthax.
+Warn/ban appeals reach out to Volthax.
 If you agree to follow these rules you may type `ihavereadtherules {{verifyCode}}` in the #verify channel. (Please keep in mind there is a space between the command and the secret code).
