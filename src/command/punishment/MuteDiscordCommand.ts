@@ -114,7 +114,7 @@ export class MuteDiscordCommand extends DiscordCommand {
         return false;
       }
       /* Must specify a reason */
-      if (this.args.length < 4) {
+      if (this.args.length < 3) {
         const embed = new MessageEmbed().setTitle("Mute Error").setDescription("Your role requires a reason to mute someone.");
         await this.message.channel.send(embed);
         return false;

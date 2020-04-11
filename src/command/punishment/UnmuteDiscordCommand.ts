@@ -36,7 +36,7 @@ export class UnmuteDiscordCommand extends DiscordCommand {
       await offenderMember.roles.set(roles, "Mute removed by staff");
     }
 
-    await this.message.channel.send(new MessageEmbed().setTitle("Unmute Error").setDescription(`${offenderMember.user} has been unmuted`));
+    await this.message.channel.send(new MessageEmbed().setTitle("Unmute Success").setDescription(`${offenderMember.user} has been unmuted`));
 
     const auditChannel = await discordInstance.channels.fetch(AUDIT_LOG_CHANNEL_ID || "") as TextChannel;
     await auditChannel.send(new MessageEmbed()
