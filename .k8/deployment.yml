@@ -63,11 +63,11 @@ spec:
                 secretKeyRef:
                   name: prod-discord-secret
                   key: discord_bot_user_id
-            - name: MIXPANEL_TOKEN
+            - name: AUDIT_LOG_CHANNEL_ID
               valueFrom:
                 secretKeyRef:
-                  name: prod-analytics-secret
-                  key: mixpanel_token
+                  name: prod-discord-secret
+                  key: audit_log_channel_id
             - name: PGSSLMODE
               value: "require"
             - name: DISCORD_PREFIX
@@ -88,3 +88,7 @@ spec:
               value: "30"
             - name: SUSPENDED_TIME_TO_RESPOND_MINUTES
               value: "30"
+            - name: MUTED_ROLE
+              value: "Muted"
+            - name: LIMITED_MUTER_ROLES
+              value: "Trusted User"

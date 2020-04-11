@@ -6,5 +6,7 @@ export enum DiscordCommandType {
   HELP = "help",
   VERIFY = "ihavereadtherules",
   REFRESH_RULES ="refreshrules",
-  CYCLE_VERIFICATION_CODE ="cycleverify"
+  CYCLE_VERIFICATION_CODE ="cycleverify",
+  MUTE = "mute",
+  UNMUTE = "unmute"
 }

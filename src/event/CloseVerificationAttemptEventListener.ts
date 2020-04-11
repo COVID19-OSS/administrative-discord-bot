@@ -3,7 +3,6 @@ import bind from "bind-decorator";
 import { Message, MessageEmbed } from "discord.js";
 
 import { EventListener } from "./EventListener";
-import { MixPanelEvents } from "../const/analytics/MixPanelEvents";
 import { DiscordCommandType } from "../command/DiscordCommandType";
 import { ListenerDependencies } from "../definitions/dependencies/ListenerDependencies";
 
@@ -17,7 +16,6 @@ export class CloseVerificationAttemptEventListener extends EventListener {
 
   @bind
   private async handleCloseVerificationAttempt(message: Message): Promise<void> {
-    const { analyticService } = this.dependencies;
     try {
       if (message.channel.id !== VERIFICATION_CHANNEL_ID) return;
       if (message.member?.roles.cache.some(role => role.name === VERIFIED_ROLE)) return;
@@ -42,7 +40,6 @@ export class CloseVerificationAttemptEventListener extends EventListener {
           message.author.send(embed).catch(() => undefined),
           message.delete()
         ]);
-        analyticService.track(MixPanelEvents.CLOSE_VERIFICATION_BAD_COMMAND, { "distinct_id": message.author.id, message: message.content });
       }
       else if (message.content.toLowerCase().startsWith(DiscordCommandType.VERIFY) && missingSpace) {
         const description = `Hey there ${message.author} we noticed that you might be having some difficulty verifying your account.\n\n`
@@ -53,7 +50,6 @@ export class CloseVerificationAttemptEventListener extends EventListener {
           message.author.send(embed).catch(() => undefined),
           message.delete()
         ]);
-        analyticService.track(MixPanelEvents.CLOSE_VERIFICATION_MISSING_SPACE, { "distinct_id": message.author.id, message: message.content });
       }
     }
     catch (error) {

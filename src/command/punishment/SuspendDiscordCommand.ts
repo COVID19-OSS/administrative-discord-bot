@@ -8,7 +8,6 @@ import { Channel, GuildMember, MessageEmbed } from "discord.js";
 import { DiscordCommand } from "../DiscordCommand";
 
 import { REPLACE_MENTION_REGEX } from "../../const/RegexConstants";
-import { MixPanelEvents } from "../../const/analytics/MixPanelEvents";
 
 const { DISCORD_PREFIX, QUARANTINE_ROLES, STAFF_ROLES, SUSPENDED_ROLE, VERIFIED_ROLE, SUSPENDED_TIME_TO_RESPOND_MINUTES, RULES_CHANNEL_ID } = process.env;
 
@@ -21,7 +20,7 @@ const readFileAsync = util.promisify(fs.readFile);
 
 export class SuspendDiscordCommand extends DiscordCommand {
   public async execute(): Promise<void> {
-    const { repositoryRegistry: { quarantineRepository }, analyticService } = this.dependencies;
+    const { repositoryRegistry: { quarantineRepository } } = this.dependencies;
     const targetDiscordUserId = this.args[0].replace(REPLACE_MENTION_REGEX, "");
 
     const reasonProvided: string = this.args.splice(1).join(" ");
@@ -66,7 +65,6 @@ export class SuspendDiscordCommand extends DiscordCommand {
     await qtChannel.send({ embed: noticeEmbed, content: `${member}` });
 
     await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
-    analyticService.track(MixPanelEvents.SUSPEND, { "distinct_id": this.message.author.id, "offending_id": member.id });
   }
 
   public async validate(): Promise<boolean> {
@@ -122,14 +120,6 @@ export class SuspendDiscordCommand extends DiscordCommand {
     const moderatorUserId = await this.getCoalescedUserId(moderator.id);
 
     return quarantineRepository.create(offenderUserId, moderatorUserId, reason);
-  }
-
-  private async getCoalescedUserId(discordUserId: string): Promise<number> {
-    const { userRepository } = this.dependencies.repositoryRegistry;
-    const user = await userRepository.getByDiscordId(discordUserId);
-    if (user) return user.user_id;
-
-    return await userRepository.create({ discordUserId: discordUserId });
   }
 
   private async getNoticeDescription(offenderUserId: string, moderatorUserId: string, quarantineReason: string): Promise<string> {
