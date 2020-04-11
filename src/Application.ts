@@ -1,5 +1,3 @@
-import Mixpanel from "mixpanel";
-
 import { PostgresDriver } from "./services/PostgresDriver";
 import { DiscordService } from "./services/DiscordService";
 import { RepositoryRegistry } from "./repository/RepositoryRegistry";
@@ -12,12 +10,14 @@ import { QuarantinedUserExitEventListener } from "./event/QuarantinedUserExitEve
 import { CloseVerificationAttemptEventListener } from "./event/CloseVerificationAttemptEventListener";
 import { VerificationListener } from "./event/VerificationListener";
 import { UserJoinWelcomeEventListener } from "./event/UserJoinWelcomeEventListener";
+import { UnmuteWatcherService } from "./services/UnmuteWatcherService";
 
-const { MIXPANEL_TOKEN } = process.env;
 
 export class Application {
   private readonly discordService: DiscordService;
   private readonly postgresDriver: PostgresDriver;
+
+  private readonly unmuteWatcherService: UnmuteWatcherService;
 
   public constructor() {
     this.discordService = new DiscordService();
@@ -25,9 +25,11 @@ export class Application {
 
     const repositoryRegistry = new RepositoryRegistry(this.postgresDriver);
     const verificationCodeService = new VerificationCodeService(repositoryRegistry, this.discordService);
-    const analyticService = Mixpanel.init(MIXPANEL_TOKEN || "");
 
-    this.bindListeners({ discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService, analyticService });
+    const dependencies = { discordService: this.discordService, repositoryRegistry: repositoryRegistry, verificationCodeService };
+    this.unmuteWatcherService = new UnmuteWatcherService(dependencies);
+
+    this.bindListeners(dependencies);
   }
 
   private bindListeners(dependencies: ListenerDependencies): void {
@@ -43,9 +45,11 @@ export class Application {
     console.log("Connected to DB");
     await this.discordService.start();
     console.log("Connected to Discord");
+    this.unmuteWatcherService.start();
   }
 
   public async stop(): Promise<void> {
+    await this.unmuteWatcherService.stop();
     this.discordService.stop();
     await this.postgresDriver.stop();
   }

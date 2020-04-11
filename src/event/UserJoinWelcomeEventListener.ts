@@ -7,7 +7,6 @@ import bind from "bind-decorator";
 import { GuildMember, MessageEmbed, TextChannel } from "discord.js";
 
 import { EventListener } from "./EventListener";
-import { MixPanelEvents } from "../const/analytics/MixPanelEvents";
 import { ListenerDependencies } from "../definitions/dependencies/ListenerDependencies";
 
 const WELCOME_TEMPLATE_RELATIVE_PATH = "../../templates/welcome/welcome.txt";
@@ -24,7 +23,6 @@ export class UserJoinWelcomeEventListener extends EventListener {
 
   @bind
   private async handleUserJoinWelcome(member: GuildMember): Promise<void> {
-    const { analyticService } = this.dependencies;
     try {
       const description = await this.getRenderedWelcomeMessage(member);
       const embed = new MessageEmbed()
@@ -38,8 +36,6 @@ export class UserJoinWelcomeEventListener extends EventListener {
 
       const verifyChannel = await this.dependencies.discordService.discordInstance.channels.fetch(VERIFICATION_CHANNEL_ID) as TextChannel;
       await verifyChannel.send({ content: `<@${member.id}>`, embed: embed });
-
-      analyticService.track(MixPanelEvents.USER_JOIN_WELCOME_MESSAGE, { "distinct_id": member.id });
     }
     catch (error) {
       console.error("Could not handle user join welcome");

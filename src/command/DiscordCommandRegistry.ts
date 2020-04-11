@@ -10,6 +10,8 @@ import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
 import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
 import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
 import { VerifyDiscordCommand } from "./verification/VerifyDiscordCommand";
+import { UnmuteDiscordCommand } from "./punishment/UnmuteDiscordCommand";
+import { MuteDiscordCommand } from "./punishment/MuteDiscordCommand";
 import { HelpDiscordCommand } from "./help/HelpDiscordCommand";
 
 import { ListenerDependencies } from "../definitions/dependencies/ListenerDependencies";
@@ -25,6 +27,8 @@ export class DiscordCommandRegistry {
     registry.set(DiscordCommandType.HISTORY, HistoryDiscordCommand.prototype);
     registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.VERIFY, VerifyDiscordCommand.prototype);
+    registry.set(DiscordCommandType.UNMUTE, UnmuteDiscordCommand.prototype);
+    registry.set(DiscordCommandType.MUTE, MuteDiscordCommand.prototype);
     registry.set(DiscordCommandType.HELP, HelpDiscordCommand.prototype);
     return registry;
   }
