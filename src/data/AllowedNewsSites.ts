@@ -4,7 +4,7 @@ export const AllowedNewsSites = [
     sites: [
       {
         label: "ABC",
-        hostnames: ["abcnews.go.com"]
+        hostnames: ["abcnews.go.com", "abc7ny.com"]
       },
       {
         label: "CBS",
