@@ -9,5 +9,6 @@ export enum DiscordCommandType {
   CYCLE_VERIFICATION_CODE ="cycleverify",
   MUTE = "mute",
   UNMUTE = "unmute",
-  REFRESH_NEWS = "refreshnews"
+  REFRESH_NEWS = "refreshnews",
+  WARN = "warn"
 }
