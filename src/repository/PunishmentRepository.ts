@@ -11,9 +11,9 @@ export class PunishmentRepository extends Repository {
     return result.rows[0]["punishment_id"];
   }
 
-  public async getByOffenderDiscordId(offenderUserId: number): Promise<Array<Punishment>> {
-    const statement = "SELECT p.* FROM punishments p INNER JOIN users u ON p.offender_user_id = u.user_id WHERE u.discord_id = $1 ORDER BY q.created_at DESC";
-    const result = await this.postgresDriver.query(statement, [offenderUserId]);
+  public async getByOffenderDiscordId(offenderUserId: string, count: number): Promise<Array<Punishment>> {
+    const statement = "SELECT p.* FROM punishments p INNER JOIN users u ON p.offender_user_id = u.user_id WHERE u.discord_id = $1 ORDER BY p.created_at DESC LIMIT $2";
+    const result = await this.postgresDriver.query(statement, [offenderUserId, count]);
     return result.rows;
   }
 
