@@ -39,6 +39,14 @@ export const AllowedNewsSites = [
         hostnames: ["businessinsider.com"]
       },
       {
+        label: "NPR",
+        hostnames: ["npr.org"]
+      },
+      {
+        label: "USA Today",
+        hostnames: ["usatoday.com"]
+      },
+      {
         label: "CDC",
         hostnames: ["cdc.gov"]
       }
