@@ -65,6 +65,8 @@ export class SuspendDiscordCommand extends DiscordCommand {
     await qtChannel.send({ embed: noticeEmbed, content: `${member}` });
 
     await quarantineRepository.updateChannelId(quarantineId, qtChannel.id);
+
+    if (member.voice.channel) await member.voice.setChannel(null);
   }
 
   public async validate(): Promise<boolean> {

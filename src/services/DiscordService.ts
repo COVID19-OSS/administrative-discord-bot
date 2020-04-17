@@ -21,6 +21,10 @@ export class DiscordService {
     this.discordInstance.on("message", handler);
   }
 
+  public bindMessageUpdateListener(handler: (oldMessage: Message, newMessage: Message) => Promise<void>): void {
+    this.discordInstance.on("messageUpdate", handler);
+  }
+
   public bindUserExitListener(handler: (member: GuildMember) => Promise<void>): void {
     this.discordInstance.on("guildMemberRemove", handler);
   }
