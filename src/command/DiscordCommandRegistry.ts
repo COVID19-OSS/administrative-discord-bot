@@ -7,6 +7,7 @@ import { CycleVerificationCodeDiscordCommand } from "./verification/CycleVerific
 import { StuckChannelDiscordCommand } from "./punishment/StuckChannelDiscordCommand";
 import { RefreshRulesDiscordCommand } from "./rules/RefreshRulesDiscordCommand";
 import { UnsuspendDiscordCommand } from "./punishment/UnsuspendDiscordCommand";
+import { RefreshNewsDiscordCommand } from "./news/RefreshNewsDiscordCommand";
 import { HistoryDiscordCommand } from "./punishment/HistoryDiscordCommand";
 import { SuspendDiscordCommand } from "./punishment/SuspendDiscordCommand";
 import { VerifyDiscordCommand } from "./verification/VerifyDiscordCommand";
@@ -23,6 +24,7 @@ export class DiscordCommandRegistry {
     registry.set(DiscordCommandType.CYCLE_VERIFICATION_CODE, CycleVerificationCodeDiscordCommand.prototype);
     registry.set(DiscordCommandType.STUCK_CHANNEL, StuckChannelDiscordCommand.prototype);
     registry.set(DiscordCommandType.REFRESH_RULES, RefreshRulesDiscordCommand.prototype);
+    registry.set(DiscordCommandType.REFRESH_NEWS, RefreshNewsDiscordCommand.prototype);
     registry.set(DiscordCommandType.UNSUSPEND, UnsuspendDiscordCommand.prototype);
     registry.set(DiscordCommandType.HISTORY, HistoryDiscordCommand.prototype);
     registry.set(DiscordCommandType.SUSPEND, SuspendDiscordCommand.prototype);

@@ -68,6 +68,16 @@ spec:
                 secretKeyRef:
                   name: prod-discord-secret
                   key: audit_log_channel_id
+            - name: NEWS_CHANNEL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: prod-discord-secret
+                  key: news_channel_id
+            - name: NEWS_LISTING_CHANNEL_ID
+              valueFrom:
+                secretKeyRef:
+                  name: prod-discord-secret
+                  key: news_listing_channel_id
             - name: PGSSLMODE
               value: "require"
             - name: DISCORD_PREFIX
@@ -92,3 +102,5 @@ spec:
               value: "Muted"
             - name: LIMITED_MUTER_ROLES
               value: "Trusted User"
+            - name: MODERATION_ROLES
+              value: "Administrator,Discord Moderation,Temp Mod"

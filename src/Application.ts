@@ -11,6 +11,7 @@ import { CloseVerificationAttemptEventListener } from "./event/CloseVerification
 import { VerificationListener } from "./event/VerificationListener";
 import { UserJoinWelcomeEventListener } from "./event/UserJoinWelcomeEventListener";
 import { UnmuteWatcherService } from "./services/UnmuteWatcherService";
+import { NewsChannelAllowedSiteListener } from "./event/NewsChannelAllowedSiteListener";
 
 
 export class Application {
@@ -38,6 +39,7 @@ export class Application {
     new CloseVerificationAttemptEventListener(dependencies);
     new VerificationListener(dependencies);
     new UserJoinWelcomeEventListener(dependencies);
+    new NewsChannelAllowedSiteListener(dependencies);
   }
 
   public async start(): Promise<void> {
