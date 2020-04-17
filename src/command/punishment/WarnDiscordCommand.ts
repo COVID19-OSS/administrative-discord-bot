@@ -15,11 +15,12 @@ export class WarnDiscordCommand extends DiscordCommand {
     const { repositoryRegistry: { punishmentRepository }, discordService: { discordInstance } } = this.dependencies;
 
     const targetDiscordUserId = this.args[0].replace(REPLACE_MENTION_REGEX, "");
+    const warnReason: string = this.args.splice(1).join(" ");
 
     const moderatorUserId = await this.getCoalescedUserId(this.message.author.id);
     const offenderUserId = await this.getCoalescedUserId(targetDiscordUserId);
 
-    await punishmentRepository.create(offenderUserId, moderatorUserId, this.args[1], PunishmentType.WARN, true, DateTime.utc().toJSDate());
+    await punishmentRepository.create(offenderUserId, moderatorUserId, warnReason, PunishmentType.WARN, true, DateTime.utc().toJSDate());
 
     const guild = this.message.guild;
     const targetMember = guild?.member(targetDiscordUserId);
@@ -28,7 +29,7 @@ export class WarnDiscordCommand extends DiscordCommand {
     const warningEmbed = new MessageEmbed()
       .setTitle(`:warning: [Warn] ${targetMember.user.username}#${targetMember.user.discriminator}`)
       .setColor("#d4b350")
-      .setDescription(`Reason: ${this.args[1]}`);
+      .setDescription(`Reason: ${warnReason}`);
 
     await this.message.channel.send({
       content: `<@${targetDiscordUserId}>`,
@@ -47,7 +48,7 @@ export class WarnDiscordCommand extends DiscordCommand {
       .addField("User", targetMember, true)
       .setColor("#d4b350")
       .addField("Moderator", this.message.author, true)
-      .addField("Reason", this.args[1], true)
+      .addField("Reason", warnReason, true)
       .setTimestamp();
 
     await auditChannel.send(auditEmbed);
@@ -59,7 +60,7 @@ export class WarnDiscordCommand extends DiscordCommand {
       return false;
     }
 
-    if (this.args.length !== 2) {
+    if (this.args.length < 2) {
       await this.message.channel.send(new MessageEmbed().setTitle("Warning Error").setDescription(`Usage: \`${DISCORD_PREFIX}${DiscordCommandType.WARN} <mention/id> <reason>\``));
       return false;
     }
