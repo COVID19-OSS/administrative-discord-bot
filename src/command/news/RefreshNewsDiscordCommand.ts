@@ -36,7 +36,7 @@ export class RefreshNewsDiscordCommand extends DiscordCommand {
         .setDescription(`These sources have been vetted by our staff and are permitted in the <#${NEWS_CHANNEL_ID}> channel. If you would like to request a source be added please submit a request here:\nhttps://forms.gle/rSRPkpVhzLYKZaA66`);
     }
     AllowedNewsSites.forEach((country, index) => {
-      if (index > offset && index <= offset + count) {
+      if (index >= offset && index < offset + count) {
         embed.addField(country.country, country.sites.map(site => `${site.label} (${site.hostnames.join(", ")})`).join("\n"), false);
       }
     });
