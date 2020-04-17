@@ -1,6 +1,6 @@
 Moderators and Administrators may issue infractions for violations of these rules. However, Moderators and Adminstrators are not limited by these rules and may issue infractions for other violations not listed here. All decisions are subject to review from Administrators.
 
-While this server may be the official discord for several popular subreddits including but not limited to `/r/Coronavirus, /r/China_Flu and /r/COVID19` the staff of subreddits are not responsible for the content and discussions disseminated here. Furthermore, any of the Discord staff are not responsible for any of the content herein. While liability has been waived, the discord staff agree to operate in good faith and remove any misinformation herein.
+While this server may be affiliated with several popular subreddits including but not limited to `/r/Coronavirus, /r/China_Flu, /r/COVID19 and /r/DIY` the staff of subreddits are not responsible for the content and discussions disseminated here. Furthermore, any of the Discord staff are not responsible for any of the content herein. While liability has been waived, the discord staff agree to operate in good faith and remove any misinformation herein.
 
 This server uses various bots, some of which might store your data including but not limited to messages and user identifiers. Discord's `Terms of Service` require we disclose this to you and that you agree to allow this information to be collected. By verifying with the command in the aforementioned section of this channel, you hereby agree.
 
