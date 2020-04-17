@@ -47,19 +47,21 @@ export class NewsChannelAllowedSiteListener extends EventListener {
       return;
     }
 
-    let url;
+    let hostname;
+
     try {
-      url = new URL(message.content);
+      const url = new URL(message.content);
+      hostname = url.hostname.toLowerCase().startsWith("www") ? url.hostname.split(".").slice(1).join(".").toLowerCase() : url.hostname.toLowerCase();
     }
     catch (e) {
-      console.log("Error parsing", url?.hostname);
+      console.log("Error parsing", hostname);
       if (message.deletable) await message.delete();
       await message.author.send(embed.setDescription(`You must send a valid link in the <#${NEWS_CHANNEL_ID}> channel.`));
       return;
     }
 
     /* Check against the database of good sites, also try with www. */
-    const isAllowed = LinkUtilities.isAllowedNewsSite(url.hostname) || LinkUtilities.isAllowedNewsSite(`www.${url.hostname}`);
+    const isAllowed = LinkUtilities.isAllowedNewsSite(hostname);
     if (!isAllowed) {
       if (message.deletable) await message.delete();
       await message.author.send(embed.setDescription(`The link you sent in <#${NEWS_CHANNEL_ID}> (\`${message.content}\`) is not a trusted source.\n\nPlease check <#${NEWS_LISTING_CHANNEL_ID}> for allowed sites.\n\nIf you would like to suggest a source, please use this form: https://forms.gle/rSRPkpVhzLYKZaA66`));
