@@ -4,7 +4,7 @@ export const AllowedNewsSites = [
     sites: [
       {
         label: "ABC",
-        hostnames: ["abcnews.go.com"]
+        hostnames: ["abcnews.go.com", "abc7ny.com"]
       },
       {
         label: "CBS",
@@ -37,6 +37,14 @@ export const AllowedNewsSites = [
       {
         label: "Business Insider",
         hostnames: ["businessinsider.com"]
+      },
+      {
+        label: "NPR",
+        hostnames: ["npr.org"]
+      },
+      {
+        label: "USA Today",
+        hostnames: ["usatoday.com"]
       },
       {
         label: "CDC",
