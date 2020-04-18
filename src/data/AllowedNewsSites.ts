@@ -31,10 +31,6 @@ export const AllowedNewsSites = [
         hostnames: ["reuters.com"]
       },
       {
-        label: "Reuters",
-        hostnames: ["reuters.com"]
-      },
-      {
         label: "Business Insider",
         hostnames: ["businessinsider.com"]
       },
