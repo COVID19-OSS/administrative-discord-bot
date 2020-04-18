@@ -516,7 +516,7 @@ export const AllowedNewsSites = [
     sites: [
       {
         label: "BBC",
-        hostnames: ["bbc.com"]
+        hostnames: ["bbc.com", "bbc.co.uk"]
       },
       {
         label: "Independent",
