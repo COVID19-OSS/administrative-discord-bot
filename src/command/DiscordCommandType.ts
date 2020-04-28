@@ -10,5 +10,6 @@ export enum DiscordCommandType {
   MUTE = "mute",
   UNMUTE = "unmute",
   REFRESH_NEWS = "refreshnews",
-  WARN = "warn"
+  WARN = "warn",
+  BAN = "ban"
 }
