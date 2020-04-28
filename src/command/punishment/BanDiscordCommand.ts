@@ -3,6 +3,7 @@ import { MessageEmbed, TextChannel } from "discord.js";
 
 import { DiscordCommand } from "../DiscordCommand";
 import { DiscordCommandType } from "../DiscordCommandType";
+
 import { PermissionUtilities } from "../../utilities/PermissionUtilities";
 import { PunishmentType } from "../../definitions/entities/PunishmentType";
 
@@ -26,20 +27,25 @@ export class BanDiscordCommand extends DiscordCommand {
     const targetMember = guild?.member(targetDiscordUserId);
     if (!targetMember) throw Error("Expected to have target member");
 
-    if (banReason !== "") {
-      targetMember.ban({
-        reason: banReason
-      });
-    }
+    const noticeEmbed = new MessageEmbed()
+      .setTitle("COVID-19 Community Discord - Ban Notice")
+      .setDescription(`You have been banned by <@${this.message.author.id}> ${ banReason ? `for ${banReason}` : "" }.\nIf you feel this ban was not appropriate or you would like to provide an explanation you may do so here (within 30 days):\nhttps://forms.gle/fMyPY34S57qYZqEK6`)
+      .setColor("#d4443f")
+      .setThumbnail("https://i.imgur.com/UyieFtd.png")
+      .setTimestamp();
 
-    const warningEmbed = new MessageEmbed()
+    await targetMember.send(noticeEmbed);
+
+    await targetMember.ban({ reason: banReason || "Unspecified" });
+
+    const banEmbed = new MessageEmbed()
       .setTitle(`:hammer: [Ban] ${targetMember.user.username}#${targetMember.user.discriminator}`)
-      .setColor("#d4b350")
+      .setColor("#d4443f")
       .setDescription(`Reason: ${banReason}`);
 
     await this.message.channel.send({
       content: `<@${targetDiscordUserId}>`,
-      embed: warningEmbed
+      embed: banEmbed
     });
 
     const auditChannel = await discordInstance.channels.fetch(AUDIT_LOG_CHANNEL_ID || "") as TextChannel;
@@ -52,7 +58,7 @@ export class BanDiscordCommand extends DiscordCommand {
       .setTitle(`:hammer: [Ban] ${targetMember.user.username}#${targetMember.user.discriminator}`)
       .setThumbnail(targetMember.user.displayAvatarURL())
       .addField("User", targetMember, true)
-      .setColor("#d4b350")
+      .setColor("#d4443f")
       .addField("Moderator", this.message.author, true)
       .addField("Reason", banReason, true)
       .setTimestamp();
