@@ -13,7 +13,7 @@ The direct messaging function of discord has the opportunity to be abused. Pleas
 Rule 7: Reporting ​​​
 Every user is responsible for keeping our community safe. The report function is a tool you have to hold others accountable and helps our moderators. Please do not submit unwarranted reports, or the same report multiple times.
 Rule 8: Advertising & Links
-Advertising other servers, soliciting donations, and inundating others with links/resources is not permitted. This includes direct messages.
+Advertising, including but not limited to advertising other servers, self-promotion, soliciting donations, and inundating others with links/resources is not permitted.
 Rule 9: Misinformation
 We take the spread of misinformation very seriously. You may not claim that you have COVID19 unless you provide adequate documentation to an administrator. The dissemination of misinformation is not permitted under any circumstance. Questionable claims must be backed up with credible evidence. If you cannot provide proper evidence, staff will redirect you to #theories-conspirancies-rumors or #covid19-unconfirmed-discussion.
 Rule 10: Doxing
