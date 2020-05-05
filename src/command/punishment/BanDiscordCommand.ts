@@ -29,7 +29,7 @@ export class BanDiscordCommand extends DiscordCommand {
 
     const noticeEmbed = new MessageEmbed()
       .setTitle("COVID-19 Community Discord - Ban Notice")
-      .setDescription(`You have been banned by <@${this.message.author.id}> ${ banReason ? `for ${banReason}` : "" }.\nIf you feel this ban was not appropriate or you would like to provide an explanation you may do so here (within 30 days):\nhttps://forms.gle/fMyPY34S57qYZqEK6`)
+      .setDescription(`You have been banned for ${banReason || "Unspecified"}.\nIf you feel this ban was not appropriate or you would like to provide an explanation you may do so here (within 30 days):\nhttps://forms.gle/fMyPY34S57qYZqEK6`)
       .setColor("#d4443f")
       .setThumbnail("https://i.imgur.com/UyieFtd.png")
       .setTimestamp();
