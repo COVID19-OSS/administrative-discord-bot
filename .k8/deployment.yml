@@ -85,7 +85,7 @@ spec:
             - name: QUARANTINE_ROLES
               value: "Administrator,Temp Mod,Discord Moderation"
             - name: STAFF_ROLES
-              value: "Administrator,Temp Mod,Discord Moderation,Trusted User"
+              value: "Administrator,Temp Mod,Discord Moderation"
             - name: VERIFIED_ROLE
               value: "Default"
             - name: SUSPENDED_ROLE
@@ -101,6 +101,6 @@ spec:
             - name: MUTED_ROLE
               value: "Muted"
             - name: LIMITED_MUTER_ROLES
-              value: "Trusted User"
+              value: "Active User"
             - name: MODERATION_ROLES
               value: "Administrator,Discord Moderation,Temp Mod"
