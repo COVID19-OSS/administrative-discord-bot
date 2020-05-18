@@ -371,6 +371,10 @@ export const AllowedNewsSites = [
       {
         label: "NOS",
         hostnames: ["nos.nl"]
+      },
+      {
+        label: "rijksoverheid",
+        hostnames: ["rijksoverheid.nl"]
       }
     ]
   },
