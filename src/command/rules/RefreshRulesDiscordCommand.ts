@@ -43,8 +43,8 @@ export class RefreshRulesDiscordCommand extends DiscordCommand {
     }
 
     const embed = new MessageEmbed()
-    .setTitle("Rules Refresh")
-    .setDescription(`Success in ${rulesChannels.length} channel(s)`);
+      .setTitle("Rules Refresh")
+      .setDescription(`Success in ${rulesChannels.length} channel(s)`);
     
     await this.message.channel.send(embed);
   }
