@@ -104,3 +104,5 @@ spec:
               value: "Active User"
             - name: MODERATION_ROLES
               value: "Administrator,Discord Moderation,Temp Mod"
+            - name: VERIFIED_RULES_CHANNEL_ID
+              value: "715389843286392832"
