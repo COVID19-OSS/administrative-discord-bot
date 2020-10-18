@@ -20,3 +20,5 @@ Rule 10: Doxing
 Revealing any personally identifiable information of others (doxing) is not allowed under any circumstance. Doing so will result in an immediate ban and is subject to further consequences with Discord.
 Rule 11: Verifying
 If you agree to follow these rules you may type `ihavereadtherules {{verifyCode}}` in the #verify channel. (Please keep in mind there is a space between the command and the secret code).
+Rule 12: U.S. Election
+In light of the upcoming controversial election in the US, and to help us keep order, please make use of the new #us-election channel for all election related content (including campaign discussions, presidential debates/town-halls, etc).
