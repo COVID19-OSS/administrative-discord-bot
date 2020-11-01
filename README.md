@@ -1,2 +1,3 @@
 # Administrative Discord Bot &middot; ![Deploy](https://github.com/COVID19-OSS/administrative-discord-bot/workflows/Deploy/badge.svg) [![GitHub license](https://img.shields.io/github/license/COVID19-OSS/administrative-discord-bot)](https://github.com/COVID19-OSS/administrative-discord-bot/blob/master/LICENSE) [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/COVID19-OSS/administrative-discord-bot.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/COVID19-OSS/administrative-discord-bot/context:javascript)
 🤖 This bot will handle administrative automation on the COVID19 Discord server.
+
