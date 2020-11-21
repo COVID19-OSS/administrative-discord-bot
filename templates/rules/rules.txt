@@ -5,12 +5,12 @@ Use the correct channel for your discussion. Politics belongs in the debate chan
 Rule 3: Disruptive Behavior
 Do not spam discussion channels with text, images, or reactions. Excessive foul language and disruptive behavior is not allowed. Please reduce background noise in voice chat by using push-to-talk, or by decreasing your microphone sensitivity.
 Rule 4: Respect
-Please have respect for your fellow users and staff. Do not insult, demean, or harass them. Swearing/slang directed at other users is not permitted. Racism, homophobia, sexism, or religious attacks are not permitted. Do not maliciously offend others or discriminate against groups of people. Content considered NSFW is not permitted.
+Please have respect for your fellow users and staff. Do not insult, demean, or harass them. Swearing/slang directed at other users is not permitted. Racism, homophobia, sexism, or religious attacks are not permitted. Do not maliciously offend others or discriminate against groups of people. Content considered NSFW is not permitted. This rule also applies in #free-discussion.
 Rule 5: Dooming
 Dooming (the act of making apocalyptic claims) is not welcome here.
 Rule 6: Private Messaging
 The direct messaging function of discord has the opportunity to be abused. Please refrain from direct messaging our staff without permission from them or another staff member. Direct messages sent to our staff are not private. (This does not apply if the matter is of urgent concern.)
-Rule 7: Reporting ​​​
+Rule 7: Reporting
 Every user is responsible for keeping our community safe. The report function is a tool you have to hold others accountable and helps our moderators. Please do not submit unwarranted reports, or the same report multiple times.
 Rule 8: Advertising & Links
 Advertising, including but not limited to advertising other servers, self-promotion, soliciting donations, and inundating others with links/resources is not permitted.
@@ -22,3 +22,5 @@ Rule 11: Verifying
 If you agree to follow these rules you may type `ihavereadtherules {{verifyCode}}` in the #verify channel. (Please keep in mind there is a space between the command and the secret code).
 Rule 12: U.S. Election
 To help keep order, please direct any election related discussions to the #debate or #theories-conspirancies-rumors channel.
+Rule 13: MP Questions
+In an effort to ensure accuracy and safety for our users, we will only be allowing our verified Medical Professionals to answer questions in the #covid-19-questions channel. 
