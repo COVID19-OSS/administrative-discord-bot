@@ -29,14 +29,10 @@ jobs:
         run: docker push registry.digitalocean.com/covid19/administrative-discord-bot:$(echo $GITHUB_SHA | head -c7)
 
       - name: Update deployment file
-        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/covid19/administrative-discord-bot:'${TAG}'|' $GITHUB_WORKSPACE/.k8/deployment.yml
+        run: TAG=$(echo $GITHUB_SHA | head -c7) && sed -i 's|<IMAGE>|registry.digitalocean.com/covid19/administrative-discord-bot:'${TAG}'|' $GITHUB_WORKSPACE/config/deployment.yml
 
-      - name: Save DigitalOcean kubeconfig
-        uses: digitalocean/action-doctl@master
-        env:
-          DIGITALOCEAN_ACCESS_TOKEN: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-        with:
-          args: kubernetes cluster kubeconfig show covid19-discord-administration > $GITHUB_WORKSPACE/.kubeconfig
+      - name: Save DigitalOcean kubeconfig with short-lived credentials
+        run: doctl kubernetes cluster kubeconfig save --expiry-seconds 600 covid19-discord-administration
 
       - name: Deploy to DigitalOcean Kubernetes
         run: |
@@ -44,7 +40,7 @@ jobs:
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig create secret generic prod-db-secret --from-literal=username=${{ secrets.PRODUCTION_DATABASE_USERNAME }} --from-literal=password=${{ secrets.PRODUCTION_DATABASE_PASSWORD }} --from-literal=hostname=${{ secrets.PRODUCTION_DATABASE_HOSTNAME }} --from-literal=port=${{ secrets.PRODUCTION_DATABASE_PORT }} --from-literal=database=${{ secrets.PRODUCTION_DATABASE_DATABASE }}
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig delete secret prod-discord-secret
           kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig create secret generic prod-discord-secret --from-literal=token=${{ secrets.PRODUCTION_DISCORD_TOKEN }} --from-literal=verify_channel_id=${{ secrets.PRODUCTION_DISCORD_VERIFY_CHANNEL_ID }} --from-literal=rules_channel_id=${{ secrets.PRODUCTION_DISCORD_RULES_CHANNEL_ID }} --from-literal=discord_bot_user_id=${{ secrets.PRODUCTION_DISCORD_BOT_USER_ID }} --from-literal=audit_log_channel_id=${{ secrets.PRODUCTION_DISCORD_AUDIT_LOG_CHANNEL_ID }} --from-literal=news_channel_id=${{ secrets.PRODUCTION_DISCORD_NEWS_CHANNEL_ID }} --from-literal=news_listing_channel_id=${{ secrets.PRODUCTION_DISCORD_NEWS_LISTING_CHANNEL_ID }}
-          kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig apply -f $GITHUB_WORKSPACE/.k8/deployment.yml
+          kubectl apply -f $GITHUB_WORKSPACE/config/deployment.yml
 
       - name: Verify deployment
-        run: kubectl --kubeconfig=$GITHUB_WORKSPACE/.kubeconfig rollout status deployment/administrative-discord-bot-deployment
+        run: kubectl rollout status deployment/administrative-discord-bot-deployment
