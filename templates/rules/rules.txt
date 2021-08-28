@@ -20,7 +20,5 @@ Rule 10: Doxing
 Revealing any personally identifiable information of others (doxing) is not allowed under any circumstance. Doing so will result in an immediate ban and is subject to further consequences with Discord.
 Rule 11: Verifying
 If you agree to follow these rules you may type `ihavereadtherules {{verifyCode}}` in the #verify channel. (Please keep in mind there is a space between the command and the secret code).
-Rule 12: U.S. Election
-To help keep order, please direct any election related discussions to the #debate or #theories-conspirancies-rumors channel.
-Rule 13: MP Questions
+Rule 12: MP Questions
 In an effort to ensure accuracy and safety for our users, we will only be allowing our verified Medical Professionals to answer questions in the #covid-19-questions channel. 
